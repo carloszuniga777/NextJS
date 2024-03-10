@@ -35,4 +35,37 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-prueba
+-----------------------------------------
+
+Pasos para crear una imagen Docker y ejecutar:
+
+1. Crear el archivo dockerfile
+
+2. Contruir la imagen docker en cmd, ejecutarlo en el directorio del proyecto:
+
+>>cd  D:\....\01-first-steps
+>>docker build -t nextjs-first-steps .
+
+  docker build -t (nombre de la imagen)  (punto: indica donde se encuentra en el archivo dockerfile en el proyecto, en este caso el archivo se encuentra en root del proyecto)
+
+
+3. ejecutar la imagen para visualizar la app en el navegador:
+
+>> docker container run -p 3000:3000 nextjs-first-steps
+
+docker container run -p (puerto maquina):(puerto del contenedor configurado en dockerfile) (archivo)
+
+
+
+4. Para ejecutar sin necesidad que la terminal este abierta
+
+>>docker container run -dp 3000:3000 nextjs-first-steps
+
+
+5. Cancelar ejecucion de la imagen en docker
+
+Ir a la aplicacion de Docker >> Containers 
+    Eliminar los containers que esten asociados a la imagen nextjs-first-steps
+
+
+

@@ -1,0 +1,23 @@
+#version de node y linux(alpine)
+FROM node:20.11.1-alpine   
+
+#directorio donde se va a trabajar (APP)
+WORKDIR /app
+
+
+
+#copio todos los archivos de mi proyecto al WorkDirectory
+COPY . .
+
+
+#se instalan todas las dependencias
+RUN npm install
+
+#luego ejecuto el build de produccion
+RUN npm run build
+
+#expone el puerto 3000 para que sea el unico medio de comunicacion del mundo exterior hacia mi imagen
+EXPOSE 3000
+
+#inicializar el servidor de mi aplicacion
+CMD ["npm", "start"]
