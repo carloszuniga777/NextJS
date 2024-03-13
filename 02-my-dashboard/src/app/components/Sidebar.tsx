@@ -4,7 +4,7 @@ import Image from 'next/image'
 import React from 'react'
 import { IoBrowsersOutline, IoCalculator, IoLogoReact } from 'react-icons/io5'
 import { SiderbarMenuItem } from './SiderbarMenuItem'
-import { title } from 'process'
+import { MdCatchingPokemon } from 'react-icons/md'
 
 
 const menuItems = [
@@ -19,7 +19,15 @@ const menuItems = [
         icon: <IoCalculator size={40}/>,
         title: "Counter",
         subTitle: 'Contador Client Side'
+     },
+     {
+        path: '/dashboard/pokemons',
+        icon: <MdCatchingPokemon size={40}/>,
+        title: "Pokemons",
+        subTitle: 'Generacion Estatica'
      }
+
+
 ]
 
 
