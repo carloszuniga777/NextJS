@@ -1,7 +1,7 @@
 //sniper prc
 
-import { PokemonResponse, SimplePokemon } from "@/app/pokemons";
-import Image from 'next/image';
+import { PokemonGrid, PokemonResponse, SimplePokemon } from "@/app/pokemons";
+
 
 const getPokemons = async( limit = 20, offset = 0):Promise<SimplePokemon[]>=>{
     
@@ -17,23 +17,15 @@ const getPokemons = async( limit = 20, offset = 0):Promise<SimplePokemon[]>=>{
 }
 
 
+
 export default async function PokemonsPage() {
     const pokemons = await getPokemons(151)
-    
+
   return (
-
-
-
     
     <div className="flex flex-col">
-      <div className="flex flex-wrap gap-10 items-center justify-center">
-        <Image
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/10.svg`}       
-            width={100}
-            height={100}
-            alt="nombre"
-        />
-      </div>
+      <span className="text-5xl my-2">Listado de Pokemons <small>estatico</small></span>
+      <PokemonGrid pokemons={pokemons}/>
     </div>
   
 
