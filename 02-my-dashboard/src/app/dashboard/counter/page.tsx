@@ -1,4 +1,5 @@
-import { CarCounter } from "@/app/shopping-cart";
+import { CarCounter } from "@/shopping-cart";
+
 
 
 //sniper metadata: mr

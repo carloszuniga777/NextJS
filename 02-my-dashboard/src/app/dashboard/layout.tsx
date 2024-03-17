@@ -1,6 +1,6 @@
 //sniper: lcr
 
-import { Sidebar } from "../components";
+import { Sidebar } from "../../components";
 
 
 

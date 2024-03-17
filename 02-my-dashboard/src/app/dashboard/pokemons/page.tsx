@@ -1,6 +1,6 @@
 //sniper prc
+import { PokemonGrid, PokemonResponse, SimplePokemon } from "@/pokemons";
 
-import { PokemonGrid, PokemonResponse, SimplePokemon } from "@/app/pokemons";
 
 
 const getPokemons = async( limit = 20, offset = 0):Promise<SimplePokemon[]>=>{
@@ -12,6 +12,9 @@ const getPokemons = async( limit = 20, offset = 0):Promise<SimplePokemon[]>=>{
         id: pokemon.url.split('/').at(-2)!,
         name: pokemon.name
     })) 
+
+   // throw new Error('Esto es un error que no deberia de suceder')
+   //throw notFound()
 
     return pokemons                   
 }

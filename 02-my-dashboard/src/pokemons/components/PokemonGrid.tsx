@@ -1,5 +1,4 @@
 //sniper rafc
-import Image from 'next/image';
 import { PokemonCards } from './PokemonCards';
 import { SimplePokemon } from '../interfaces/simple-pokemon';
 
