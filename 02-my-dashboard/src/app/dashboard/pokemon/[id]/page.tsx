@@ -3,6 +3,7 @@
 import { Pokemon } from "@/pokemons/interfaces/pokemon"
 import { Metadata } from "next"
 import Image from "next/image"
+import {notFound} from 'next/navigation'
 
 interface Props{
     params: {id: string}
@@ -10,27 +11,41 @@ interface Props{
 
 
 const getPokemon = async(id: string): Promise<Pokemon>=>{
-    const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`,{
-        cache: 'force-cache',
-        // next: {
-        //     revalidate: 60 * 60 * 30 * 6 
-        // }
-    }).then( resp => resp.json())
 
-    console.log('Se cargo: ', pokemon.name)
-    
-    return pokemon
+    try{
+        const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`,{
+            cache: 'force-cache',
+            // next: {
+            //     revalidate: 60 * 60 * 30 * 6 
+            // }
+        }).then( resp => resp.json())
+
+        console.log('Se cargo: ', pokemon.name)
+        
+        return pokemon    
+
+    }catch(error){
+        notFound()     //Si el usuario escribe un id de un pokemon que no existe en la url /dashboard/pokemon/400000  redirige a la pagina not found
+    }
 }
 
 
-
+//genera la metadata dinamicamente, en base al id del pokemon que el usuario selecciono
 export async function generateMetadata({params}:Props):Promise<Metadata>{
     
-    const {id, name} = await getPokemon(params.id)
+    try{
+        const {id, name} = await getPokemon(params.id)
 
-    return{
-        title: `#${id} - ${name}`,
-        description: `Pagina del pokemon ${name}`
+        return{
+            title: `#${id} - ${name}`,
+            description: `Pagina del pokemon ${name}`
+        }
+
+    }catch(error){
+        return{
+            title: `Pagina del Pokemon`,
+            description: 'Este es un pokemon'
+        }
     }
 }
 
@@ -38,6 +53,10 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 
 //sniper: prc
 
+/*Esta es la funcionalidad que permite crear la pagina modal cuando es seleccionado un pokemon,
+  Cuando se selecciona un pokemon se envia como parametros el id del pokemon, luego se hace una 
+  peticion con ese id para obtener toda la informacion del pokemon y poder mostrarla dinamicamente  
+*/
 export default async function PokemonPage({ params }: Props) {
 
     const pokemon = await getPokemon(params.id);

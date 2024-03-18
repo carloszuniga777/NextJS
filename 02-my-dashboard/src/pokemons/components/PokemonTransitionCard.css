@@ -1,0 +1,12 @@
+/*Archivo no implementado*/
+
+.cardPokemon{
+  transform: translateY(150px);
+  opacity: 0;
+  transition: 0.4s all ease;
+}
+
+.cardPokemon.active{
+   transform: translateY(0);
+   opacity: 1; 
+}

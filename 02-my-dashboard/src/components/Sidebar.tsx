@@ -6,7 +6,7 @@ import { IoBrowsersOutline, IoCalculator, IoLogoReact } from 'react-icons/io5'
 import { SiderbarMenuItem } from './SiderbarMenuItem'
 import { MdCatchingPokemon } from 'react-icons/md'
 
-
+//Se mapean las rutas y el titulo que va contener el menu
 const menuItems = [
     {
        path: '/dashboard/main',
@@ -31,12 +31,14 @@ const menuItems = [
 ]
 
 
+//Se crea el menu
+
 export const Sidebar = () => {
   return (
    
     <div id="menu" 
         style={{width: '400px'}}
-        className="bg-gray-900 min-h-screen z-10 text-slate-300 w-64  left-0  overflow-y-scroll">
+        className="bg-gray-900 min-h-screen z-10 text-slate-300 w-64  left-0  overflow">
     
         <div id="logo" className="my-4 px-6">
             <h1 className="flex items-center text-lg md:text-2xl font-bold text-white">
@@ -69,6 +71,7 @@ export const Sidebar = () => {
         <div id="nav" className="w-full px-6">
 
             {
+                //Se crean los items del menu (Dashboard, counter, Pokemon, etc)
                 menuItems.map(item=>(
                     <SiderbarMenuItem key={item.path} {...item} />
                 ))    

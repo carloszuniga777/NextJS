@@ -11,8 +11,10 @@ interface Props{
     subTitle: string;
 }
 
-
-export const SiderbarMenuItem = ({path, icon, title, subTitle}: Props) => {
+/*Se crea cada item del menu y pone estilo al elemento seleccionado con currenPath 
+  para indicar al usuario que item selecciono
+*/
+  export const SiderbarMenuItem = ({path, icon, title, subTitle}: Props) => {
     const currentPath = usePathname()                       //Solo funciona en lado de cliente, por eso es necesario usar el use-cliente //Se obtiene la ruta actual
   
     return (

@@ -3,7 +3,9 @@
 import { Sidebar } from "../../components";
 
 
-
+/*En este layout indicas que vas a reenderizar en toda la aplicacion el menu (Sidebar) 
+  y el children que viene siendo toda aplicacion
+*/ 
 export default function DashboardLayout({children}: {children: React.ReactNode;}) {
 
 
@@ -13,7 +15,7 @@ export default function DashboardLayout({children}: {children: React.ReactNode;}
        
         <div className="flex">
             <Sidebar/>
-            <div className="p-2 w-full text-slate-900">
+            <div className="w-full text-slate-900">
                  {children}
             </div>
         

@@ -21,6 +21,10 @@ const getPokemons = async( limit = 20, offset = 0):Promise<SimplePokemon[]>=>{
 
 
 
+/**Esta es la pagina principal donde se encuentra el listado de todos los Pokemones
+ * Se crea el componente PokemonGrid que posiciona cada uno de los pokemons
+ */
+
 export default async function PokemonsPage() {
     const pokemons = await getPokemons(151)
 
