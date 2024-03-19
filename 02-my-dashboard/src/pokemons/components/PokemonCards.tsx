@@ -42,9 +42,19 @@ export const PokemonCards = ({pokemon}:Props) => {
           <div className="flex flex-col justify-center items-center">
             <p className="pt-2 text-lg font-semibold text-gray-50 text-center capitalize">{name}</p>
             <div className="mt-5">
-                <Link href={`/dashboard/pokemon/${id}`} className="border rounded-full py-2 px-5 text-xs font-semibold text-gray-100">
-                    Más información
-                </Link>
+
+                   <Link href={`/dashboard/pokemons/${name}`} className="border rounded-full py-2 px-5 text-xs font-semibold text-gray-100">
+                        Más información
+                    </Link> 
+
+                  {/* Cuando el usuario da click en la tarjeta 'mas informacion' envia el id para que se genere la informacion de la pagina a la cual es redirigida
+                    
+                    <Link href={`/dashboard/pokemon/${id}`} className="border rounded-full py-2 px-5 text-xs font-semibold text-gray-100">
+                        Más información
+                    </Link>
+
+                  */}
+
             </div>
           </div>
         </div>

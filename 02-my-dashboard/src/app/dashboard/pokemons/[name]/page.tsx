@@ -6,7 +6,7 @@ import Image from "next/image"
 import {notFound} from 'next/navigation'
 
 interface Props{
-    params: {id: string}
+    params: {name: string}
 }
 
 //sniper gsp
@@ -27,10 +27,10 @@ export async function generateStaticParams(){
 
 
 
-const getPokemon = async(id: string): Promise<Pokemon>=>{
+const getPokemon = async(name: string): Promise<Pokemon>=>{
 
     try{
-        const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`,{
+        const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`,{
             /*cache: 'force-cache', */                    //Guarda en cache el primer fetch, cada vez que el usuario hace una peticion realmente lo que se envia es lo que esta en cache, se guarda en cache para evitar que se haga fetch constantemente  | No mezclarlo cuando se utiliza revalidate, dejar solo revalidate                      
             next: {
                 revalidate: 60 * 60 * 30 * 6             //Revalida en un periodo de tiempo establecido, para que vuelva hacer el fetch y obtener la informacion nueva, es decir, cada cierto tiempo vuelve hacer otro fetch y este es almacenado en la cache
@@ -51,7 +51,7 @@ const getPokemon = async(id: string): Promise<Pokemon>=>{
 export async function generateMetadata({params}:Props):Promise<Metadata>{
     
     try{
-        const {id, name} = await getPokemon(params.id)
+        const {id, name} = await getPokemon(params.name)
 
         return{
             title: `#${id} - ${name}`,
@@ -76,7 +76,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 */
 export default async function PokemonPage({ params }: Props) {
 
-    const pokemon = await getPokemon(params.id);
+    const pokemon = await getPokemon(params.name);
     
   
     return (
