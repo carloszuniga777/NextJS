@@ -1,5 +1,6 @@
 
 
+import { PokemonResponse } from "@/pokemons"
 import { Pokemon } from "@/pokemons/interfaces/pokemon"
 import { Metadata } from "next"
 import Image from "next/image"
@@ -10,19 +11,27 @@ interface Props{
 }
 
 //sniper gsp
-/*
+/*  Generacion estaticas de paginas:
+
    - Sirve para decirle al servidor que genere todas las paginas (del modal) antes que el usuario lo solicite, el servidor las genera en tiempo de compilacion 
    - Regresa un arreglo con todos los params que queremos que sean usados a la hora de contruccion
    - Solo se va a ejecutar en build time
 
  */
-
 export async function generateStaticParams(){
-    const static151Pokemons = Array.from({ length: 151 }).map((value, index)=> `${index + 1}`)
+    
+    const data:PokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=151`)
+                       .then( res => res.json())
+                                          
+    const static151Pokemons = data.results.map( pokemon => ({
+        name: pokemon.name
+    })) 
 
-    return static151Pokemons.map( id =>({
-        id: id
+
+    return static151Pokemons.map(  ({ name }) =>({
+        name: name
     }))
+
 }
 
 

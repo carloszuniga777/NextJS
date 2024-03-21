@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import React from 'react'
-import { IoBrowsersOutline, IoCalculator, IoLogoReact } from 'react-icons/io5'
+import { IoBrowsersOutline, IoCalculator, IoHeartOutline, IoLogoReact, IoStarOutline } from 'react-icons/io5'
 import { SiderbarMenuItem } from './SiderbarMenuItem'
 import { MdCatchingPokemon } from 'react-icons/md'
 
@@ -16,15 +16,21 @@ const menuItems = [
     },
     {
         path: '/dashboard/counter',
-        icon: <IoCalculator size={40}/>,
+        icon: <IoCalculator size={40} className='text-orange-500'/>,
         title: "Counter",
         subTitle: 'Contador Client Side'
      },
      {
         path: '/dashboard/pokemons',
-        icon: <MdCatchingPokemon size={40}/>,
+        icon: <MdCatchingPokemon size={40} className='text-sky-500'/>,
         title: "Pokemons",
         subTitle: 'Generacion Estatica'
+     },
+     {
+        path: '/dashboard/favorite',
+        icon: <IoHeartOutline size={40} className='text-red-500'/>,
+        title: "Favoritos",
+        subTitle: 'Global State'
      }
 
 
