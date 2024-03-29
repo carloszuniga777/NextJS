@@ -1,6 +1,7 @@
 
 
 export { PokemonGrid } from './components/PokemonGrid'
+export {FavoritePokemons } from './components/FavoritePokemons'
 
 
 //Exportacion del tipo de dato, por eso se pone Type, ya que no es un objeto

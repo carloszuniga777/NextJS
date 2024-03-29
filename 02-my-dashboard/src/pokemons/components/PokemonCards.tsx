@@ -1,9 +1,12 @@
-//sniper rafc
+'use client'
 
+//snippet rafc
 import Image from "next/image"
 import { SimplePokemon } from '../interfaces/simple-pokemon';
 import Link from "next/link";
-import { IoHeartOutline } from "react-icons/io5";
+import { IoHeart, IoHeartOutline } from "react-icons/io5";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { toggleFavorite } from "@/store/pokemons/pokemons";
 //import "./PokemonTransitionCard.css";
 
 interface Props{
@@ -16,6 +19,22 @@ interface Props{
 export const PokemonCards = ({pokemon}:Props) => {
 
     const {id, name} = pokemon
+    
+    //redux
+    const isFavorite = useAppSelector(state => !!state.pokemons.favorites[id]) //Consulta si el id del pokemon esta guardado en el redux, la negacion convierte el undefined cuando este no existe en true y la doble negacion convierte el true en false, es decir, !! convierte el undefined a un boleano de tipo false
+    const dispach    = useAppDispatch()
+
+   // console.log(isFavorite)
+
+    /*
+      Cuando el usuario da click en el favorito, dispara la accion 
+      y si el pokemon no estaba marcado como favorito lo guarda 
+      de lo contrario lo elimina del estado global de redux
+    */
+    const onToggle = () => {
+      dispach( toggleFavorite(pokemon) )
+    }  
+
 
   return (
 
@@ -51,17 +70,24 @@ export const PokemonCards = ({pokemon}:Props) => {
         </div>
 
 
-        <div className="border-b">
-            <Link href="/dashboard/main" className="px-4 py-2 flex justify-center items-center">
-                  <div className="text-gray-50">
-                      <IoHeartOutline/>
+        <div className="border-b relative" onClick={onToggle}>
+            <div className="px-4 py-2  flex justify-center items-center cursor-pointer">
+                  <div>
+                    {
+                      isFavorite ? (<IoHeart className="text-red-500"/>) 
+                                 : (<IoHeartOutline className="text-gray-50"/>)    
+                    }
+                      
                   </div>
                   <div className="pl-3">
-                    <p className="text-sm font-medium text-gray-50 leading-none"> 
-                        No es favorito
+                    <p className="text-sm font-medium text-gray-50 leading-4 text-center"> 
+                       {
+                         isFavorite ? 'Es favorito' : 'No es favorito' 
+                       }
                     </p>
+                    <p className="text-xs text-gray-50"> Click para cambiar</p>
                   </div>
-            </Link>
+            </div>
         </div>
   </div>
 
