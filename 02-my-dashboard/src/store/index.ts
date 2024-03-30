@@ -19,7 +19,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(localStorageMiddleware as Middleware),
 
- /* Otra manera de hacer el middleware: 
+ /* Otra manera de hacer el middleware (Documentacion: https://redux-toolkit.js.org/api/getDefaultMiddleware): 
   middleware: (getDefaultMiddleware) => 
       getDefaultMiddleware({
           thunk: {

@@ -25,7 +25,7 @@ export interface CounterResponse {
     count:  number;
 }
 
-
+//Se ejecuta el metodo GET del API route
 const getApiCounter = async():Promise<CounterResponse>=>{
     const data = await fetch('/api/counter')
                        .then(res => res.json()) 
