@@ -50,7 +50,7 @@
     10. Se crea el archivo SEED que sirva para insertar informacion de relleno/basura para poder trabajar en un ambiente de desarrollo con el objetivo de probar la aplicacion, de tal forma que si inserto o borro informacion sea facil recuperar la informacion. 
     Este archivo se crea en el directorio api: api/seed/router.ts
 
-
+    11. Instalar yup https://www.npmjs.com/package/yup
 -->
 
 
@@ -63,9 +63,16 @@ Pasos para leventar la app en desarrollo
 docker compose up -d
 ```
 
-2. Renombrar el .env.temp a .env 
+2. Crear una copia de env.template y renombrarlo a .env 
 3. Reemplazar las variable de entorno
-4. Ejecutar el SEED para [crear la base de datos local](localhost:3000/api/seed) 
+4. Ejecutar el comando  ``` npm install ```
+5. Ejecutar el comando ``` npm run dev ```
+6. Ejecutar estos comandos de prisma
+```
+    npx prisma migrate dev
+    npx prisma generate
+```
+7. Ejecutar el SEED para [crear la base de datos local](localhost:3000/api/seed) 
 
 # Prisma commnads
 ```

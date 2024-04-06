@@ -1,5 +1,13 @@
+/**Paginacion simple: 
+ *  https://www.prisma.io/docs/orm/prisma-client/queries/pagination
+ *  https://nextjs.org/docs/app/building-your-application/routing/route-handlers
+ * 
+ */
+
+//snippet rag
 import { NextResponse, NextRequest } from 'next/server'
 import prisma from '@/app/lib/prisma';
+import * as yup from 'yup';
 
 export async function GET(request: Request) { 
 
@@ -30,3 +38,54 @@ export async function GET(request: Request) {
 
   return NextResponse.json(todos)
 }
+
+/* ESQUEMA DE VALIDACION: yup: https://www.npmjs.com/package/yup
+ * 
+ *  Esquema de validacion, cualquier propiedad que no este definida
+ *  aqui va a dar un error
+ * 
+ * Sirve para evitar que el usuario configure mal el json a enviar
+ * 
+ */
+const postSchema = yup.object({
+    description: yup.string().required(),
+    complete: yup.boolean().optional().default(false)
+})
+
+
+//Crear un nuevo registro
+/*
+    PRUEBAS POSMAN:
+     Hacer peticion de tipo POST localhost:3000/api/todos/
+     Seleccionar > Body
+     Seleccionar > Raw
+     Escribir:
+     {
+        // "id": "d06b606f-897e-4cba-9106-bea7f4e17c149", 
+        "description": "Sexto hola mundo",
+        "complete": true,
+        //"otrapropiedad":123
+      }
+  
+*/
+
+export async function POST(request: Request) { 
+
+  //body = await await request.json()
+
+  try{
+
+      const { description, complete } = await postSchema.validate(await request.json()) //Se realiza la peticion POST localhost:3000/api/todos/ y se obtiene el body
+    
+       const todo = await prisma.todo.create({data: { description, complete } })   //Inserta un registro en la base de datos
+    
+      return NextResponse.json(todo)
+
+  }catch(error){
+    return NextResponse.json(error, { status: 400} )
+  } 
+
+}
+
+
+
