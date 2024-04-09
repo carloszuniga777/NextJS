@@ -36,8 +36,8 @@ const authOptions= {
 
                                 // console.log(userFound)
                                 
-                                //Si el usuario no ha sido encontrado returna null
-                                if(!userFound) return null
+                                //Si el usuario no ha sido encontrado lanza un error
+                                if(!userFound) throw new Error('Usuario no encontrado')
 
                                 //Se coloco para solventar el problema de undefined de credentials.password
                                 if(!credentials) return null
@@ -47,7 +47,7 @@ const authOptions= {
                                 const matchPassword = await bcrypt.compare(credentials.password, userFound.password)
                                 
                                 //Si no ha coincide la contrasena retorna null
-                                if(!matchPassword) return null    
+                                if(!matchPassword) throw new Error('Contraseña incorrecta')    
 
                             //Si el usuario se autentico correctamente se crea un tocken en las cookies, y te redirige al homePage    
                             return {

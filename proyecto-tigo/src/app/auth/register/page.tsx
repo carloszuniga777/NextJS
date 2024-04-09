@@ -5,6 +5,8 @@ import {useForm} from 'react-hook-form'         //Validador del formulario
 import {useRouter} from 'next/navigation'       //Redireccionador de pagina
 
 
+
+
 export default function Registerpage () {
 
     const {register, handleSubmit, formState: {errors}} = useForm()  //Permite registrar los input que vamos a capturar
@@ -146,6 +148,7 @@ export default function Registerpage () {
                   <span className='text-red-500 text-xs'>{errors.confirmPassword.message?.toString()}</span>      
                 )
              }
+
 
             <button className='w-full bg-blue-500 text-white p-3 rounded-lg'>
                 Registrar
