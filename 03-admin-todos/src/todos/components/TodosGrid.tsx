@@ -1,7 +1,40 @@
-//snippet rafc
+'use client';
 
-export const TodosGrid = () => {
+//snippet rafc
+import {Todo} from '@prisma/client'
+import { TodoItem } from './TodoItem';
+
+import * as todosApi from '@/todos/helpers/todos'  //Exporta los fetch de actualizar, agregar, etc
+import { useRouter } from 'next/navigation';
+
+interface Props {
+  todos?: Todo[];
+}
+
+export const TodosGrid = ({ todos = []}: Props) => {
+
+  const router = useRouter()
+
+
+  const toggleTodo = async(id: string, complete: boolean) => {
+    //console.log(id, complete)
+    const updatedTodo = await todosApi.updateTodo(id, complete)
+    
+    console.log({updatedTodo})
+    router.refresh()                                                        //Refresca el componente una vez actualizado
+  }
+
+
+
+ // console.log(todos)
+
   return (
-    <div>TodosGrid</div>
+    <div className='grid grid-cols-1 sm:grid-cols-3 gap-2'>
+    {
+       todos.map( todo => (
+         <TodoItem key={todo.id} todo={ todo } toggleTodo={toggleTodo}/>
+       ))
+    }
+    </div>
   )
 }

@@ -104,6 +104,8 @@ export async function PUT(request: Request, {params}: Segments) {
 
         const {complete, description} = await putSchema.validate( await request.json())
 
+       // console.log(complete, description) obtiene el body --escrita en postman
+
         const updateTodo= await prisma.todo.update({
             where: { id },                                         //ID del registro a actualizar         
             data: {complete, description}                          //Campo a actualizar 
