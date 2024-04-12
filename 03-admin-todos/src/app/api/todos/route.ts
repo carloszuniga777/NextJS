@@ -89,3 +89,21 @@ export async function POST(request: Request) {
 
 
 
+export async function DELETE(request: Request) { 
+
+  //body = await await request.json()
+
+  try{
+
+       await prisma.todo.deleteMany({where: {complete: true}})   //Borra los registros que estan completados
+    
+       return NextResponse.json('Borrados')
+
+  }catch(error){
+    return NextResponse.json(error, { status: 400} )
+  } 
+
+}
+
+
+

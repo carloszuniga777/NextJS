@@ -1,13 +1,18 @@
 'use client';
 
-import { createTodo } from "@/todos/helpers/todos";
+import { addTodo, deleteCompleted } from "@/todos/actions/todo-actions";     //Manipulando la base de datos con SERVER ACTION
+//import * as todosApi from "@/todos/helpers/todos";                        //Manera antigua de manipular la base de datos con REST API
+//import { useRouter } from "next/navigation";                    
 import { FormEvent, useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 
 
 export const NewTodo = () => { 
 
-    const [description, setDescription] = useState('')  //Valida que el usuario haya escrito algo en el input y evita que se haga submit
+    //const router = useRouter();
+    const [description, setDescription] = useState('')  //Valida que el usuario haya escrito algo en el input y evita que se haga submit si el input esta vacio
+
+
 
     const onSubmit = async(e: FormEvent) => {
         e.preventDefault()
@@ -16,12 +21,20 @@ export const NewTodo = () => {
 
         //console.log('form sumitted', description)
         
-        createTodo(description)
+        // todosApi.createTodo(description)           //Creando el todo con REST API (Manera antigua)
 
-        
-
+        await addTodo(description)                     //Creando el todo con Server Action (nueva forma)
+        setDescription('')                            //Limpia el input
+       //  router.refresh()                           //Con Sever Action ya no se usa router.refresh
     } 
 
+
+    /*//Borrando el todo con REST API (Manera antigua)
+    const deleteCompleted = async()=>{
+        await todosApi.deleteCompletedTodos()
+        router.refresh()
+    }
+    */
 
 
   return (
@@ -38,11 +51,9 @@ export const NewTodo = () => {
       
       <span className='flex flex-1'></span>
 
-      <button 
-
-        type='button' className="flex items-center justify-center rounded ml-2 bg-red-400 p-2 text-white hover:bg-red-700 transition-all">
+      <button type='button' onClick={()=>deleteCompleted()} className="flex items-center justify-center rounded ml-2 bg-red-400 p-2 text-white hover:bg-red-700 transition-all">
         <IoTrashOutline />
-        Delete
+        <span className="ml-2">Borrar completados</span>
       </button>
 
 
