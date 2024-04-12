@@ -3,11 +3,13 @@
 import {useForm} from 'react-hook-form'   //Validador del formulario 
 import {signIn} from 'next-auth/react'    //Autenticacion
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export default function LoginPage() {
 
   const {register, handleSubmit, formState: {errors}} = useForm()
   const router = useRouter()
+  const [error, setError] = useState<string | null>(null)
 
   const onSubmit = handleSubmit( async({email, password}) =>{
     //Autentica si el usuario existe o no  
@@ -22,7 +24,7 @@ export default function LoginPage() {
      // console.log(res)
 
       if(res?.error){
-        alert(res.error)
+        setError(res.error)
       }else{
         router.push('/dashboard')   //Si el usuario existe redirecciona a la pagina de inicio
       }          
@@ -33,7 +35,9 @@ export default function LoginPage() {
   return (
     <section className="h-[calc(100vh-2rem)] flex justify-center items-center">
       <form onSubmit={onSubmit} className='w-1/3'>
-        <h1 className='text-slate-200 font-bold text-4xl mb-4'>Login</h1>
+
+        {error && (<p className='bg-red-700 text-lg text-white p-3  text-center rounded-lg mb-4'>{error}</p>)}
+        <h1 className='text-slate-200 font-bold text-4xl mb-6 text-center'>Login</h1>
 
           <label htmlFor="email" className='text-slate-300 mb-2 block text-sm'>
                 Usuario:
