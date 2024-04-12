@@ -15,7 +15,7 @@ interface Record{
 }
 
 //Se realiza la configuracion  https://next-auth.js.org/providers/credentials
-const authOptions= {
+export const authOptions= {
     providers:[
                 CredentialsProvider({
                         name: "Credentials",
@@ -58,7 +58,13 @@ const authOptions= {
                         }
                 }),
 
-        ]
+        ],
+
+        secret: process.env.SECRET,
+        
+        pages:{
+             signIn: "/auth/login"         //Se define que la pagina signin es la url indicada 
+        }
 }
 
 const handler = NextAuth(authOptions)
