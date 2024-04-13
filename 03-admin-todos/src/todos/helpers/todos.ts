@@ -5,11 +5,25 @@
 import { Todo } from "@prisma/client";
 
 
+//Actualizacion optimista
+const sleep = (seconds: number = 0):Promise<boolean>=>{
+  
+    return new Promise((resolve)=>{
+         setTimeout(()=>{
+                         resolve(true)
+                        },
+                         seconds * 1000
+                   )
+    })
+ }
+ 
+
 
 //Fetch para actualizar un registro a la base de datos
 export const updateTodo = async(id: string, complete: boolean):Promise<Todo> =>{
     const body = { complete }
 
+    await sleep(3)
 
     const todo = await fetch(`/api/todos/${ id }`, 
         {
@@ -52,3 +66,18 @@ export const createTodo = async(description: string):Promise<Todo> =>{
 
     return todo
 } 
+
+
+export const deleteCompletedTodos = async():Promise<void>=>{
+    const todo = await fetch('/api/todos',
+                {
+                   method: 'DELETE',
+                   headers:{
+                    'Content-Type' : 'applicacion/json'
+                   }
+                }).then(res => res.json())
+
+     console.log(todo)
+     
+     return todo
+}
