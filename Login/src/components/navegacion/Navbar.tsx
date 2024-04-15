@@ -2,16 +2,14 @@ import Link from 'next/link'
 import {getServerSession} from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
-
-
 const menuItem = [
   {
     path: '/',
-    title: 'Inicio'
+    title: 'Home'
   },
   {
     path: '/auth/login',
-    title: 'Ingresar' 
+    title: 'Login' 
   },
   {
     path: '/auth/register',
@@ -25,7 +23,7 @@ export const Navbar = async() => {
   const session = await getServerSession(authOptions)
 
   //console.log(session)  
-
+  
   return (
         <nav className='flex justify-between items-center bg-gray-950 text-white px-24 py-3'>
             <h1 className='text-xl font-bold'>NexthAuth</h1>
@@ -46,10 +44,8 @@ export const Navbar = async() => {
                           <>
                               <li>
                                   <Link href='/dashboard'>Dashboard</Link>
-                              </li>
-                              <li>
-                                  <Link href='/api/auth/signout'>Cerrar Session</Link>
-                              </li>   
+                                  <Link href='/logout'>Cerrar Session</Link>
+                               </li>   
                           </>
                         )
                       

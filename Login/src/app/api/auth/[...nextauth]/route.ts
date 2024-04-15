@@ -1,6 +1,5 @@
 import NextAuth from "next-auth/next";                                //Instalar NextAuth: npm i next-auth para la autenticacion
 import CredentialsProvider from "next-auth/providers/credentials";   //Para loggearse con usuario y contraseña     
-import AzureADProvider from "next-auth/providers/azure-ad";
 import db from '@/libs/db';
 import bcrypt from 'bcrypt';
 
@@ -18,7 +17,6 @@ interface Record{
 //Se realiza la configuracion  https://next-auth.js.org/providers/credentials
 export const authOptions= {
     providers:[
-                //Se realiza la configuracion para el ingreso de credenciales: email, password
                 CredentialsProvider({
                         name: "Credentials",
                         
@@ -59,22 +57,13 @@ export const authOptions= {
                             }     
                         }
                 }),
-               
-                 //Autenticacion Office
-                /*
-                AzureADProvider({
-                        clientId: process.env.AZURE_AD_CLIENT_ID as string,
-                        clientSecret: process.env.AZURE_AD_CLIENT_SECRET as string,
-                        tenantId: process.env.AZURE_AD_TENANT_ID,
-                      }), 
-                  */
 
         ],
 
         secret: process.env.SECRET,
         
         pages:{
-             signIn:'/login'                   //Se define que la pagina signin es la url indicada          
+             signIn: "/auth/login"         //Se define que la pagina signin es la url indicada 
         }
 }
 
