@@ -48,7 +48,7 @@ export const LoginForm = () => {
                         <figure className='flex flex-row justify-center w-full mb-3'>
                             <Image src={'/Logo-Sales-Operations.png'} alt="Logo Sales Operation" className='w-[80%]' width={1000} height={1000}/>
                         </figure>
-                        <div className='bg-white rounded-lg pt-2 pb-10 flex justify-center'>
+                        <div className='bg-white rounded-lg pt-5 pb-10 flex justify-center'>
                             <div>                                
                                 <TextInputField 
                                             name='email'    
