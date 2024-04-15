@@ -4,7 +4,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import Image from 'next/image'
 
 
-
+/*
 const menuItemLogin = [
   {
     path: '/',
@@ -19,7 +19,7 @@ const menuItemLogin = [
     title: 'Registrar'
   }
 ]
-
+*/
 
 export const Navbar = async() => {
 
@@ -27,38 +27,46 @@ export const Navbar = async() => {
 
   //console.log(session)  
 
-  return (
-        <nav className='flex justify-between items-center bg-[#00377D] text-white px-24 py-3'>
-            <Image src={"/Logo-Sales-Operations.png"} alt="Logo Sales Operation" className='w-[10%] min-w-20' width={1000} height={1000}/>
-            <ul className='flex gap-x-2'>
 
-               {/** Si el usuario esta registrado muestra el menu navegacion dashboard, de lo contrario muestra el menu de navegacion de registrar, login, home*/}
-                
-                { 
-                   !session?.user ? 
-                        (
+  const menuItemLogin = [
+    {
+      path: '/dashboard',
+      title: 'Dashboard'
+    },
+    {
+      path: '/register',
+      title: 'Registrar'
+    },
+    {
+      path: '/api/auth/signout',
+      title: 'Cerrar Session' 
+    }
+  ]
+  
+
+  return (
+
+          session?.user &&  ( 
+            
+            <nav className='flex justify-between items-center bg-[#00377D] text-white px-24 py-3'>
+                <Image src={"/Logo-Sales-Operations.png"} alt="Logo Sales Operation" className='w-[10%] min-w-20' width={1000} height={1000}/>
+                <ul className='flex gap-x-2'>
+                    {  
+                      (
                           menuItemLogin.map( ({path, title}) => (
                                 <li key={path}>
                                     <Link href={path}> {title} </Link>
                                 </li>
                             ))
-                        )  
-                        : 
-                        (
-                          <>
-                              <li>
-                                  <Link href='/dashboard'>Dashboard</Link>
-                              </li>
-                              <li>
-                                  <Link href='/api/auth/signout'>Cerrar Session</Link>
-                              </li>   
-                          </>
-                        )
-                      
+                        )    
+                    }  
+                              
+                </ul>
+            </nav>
 
-                }   
-                  
-            </ul>
-        </nav>
-  )
+           )
+
+   )
 }
+
+ 
