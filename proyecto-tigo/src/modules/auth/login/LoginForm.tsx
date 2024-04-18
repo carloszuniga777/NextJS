@@ -17,24 +17,25 @@ export const LoginForm = () => {
 
 
   //Envio del formulario
-  const onSubmit = handleSubmit( async({email, password}) =>{
+  const onSubmit = handleSubmit( async({username, password}) =>{
     
     //Autentica si el usuario existe o no  
     const res = await signIn('credentials',{
-                                              email: email,
+                                              username: username,
                                               password: password,
                                               redirect: false           //Para que no redirija al formulario que tiene por defecto NextAuth
                                             }
                               )
 
-      //console.log(res)
+     // console.log('res', res)
 
+      
       if(res?.error){
         setError(res.error)
       }else{
         router.push('/dashboard')   //Si el usuario existe redirecciona a la pagina de inicio
         router.refresh()
-      }          
+      }      
                               
   })
 
@@ -51,10 +52,10 @@ export const LoginForm = () => {
                         <div className='bg-white rounded-lg pt-5 pb-10 flex justify-center'>
                             <div>                                
                                 <TextInputField 
-                                            name='email'    
+                                            name='username'    
                                             label='Usuario'    
-                                            type='email'    
-                                            placeholder='user@email.com' 
+                                            type='text'    
+                                            placeholder='Usuario' 
                                             register={register} 
                                             errors={errors.email}
                                 />

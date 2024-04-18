@@ -17,11 +17,24 @@ datasource db {
 //  ejecutar prisma migrate dev --name init  
 //  donde init es el nombre, al ejecutar se instala automaticamente el prisma client
 
-model User {
-  id        Int @id @default(autoincrement())
-  email     String @unique
-  username  String @unique  
-  password  String
-  createAt  DateTime @default(now())
-  updateAt  DateTime @updatedAt
+
+// model User {
+//   id        Int @id @default(autoincrement())
+//   email     String @unique
+//   username  String @unique  
+//   password  String
+//   createAt  DateTime @default(now())
+//   updateAt  DateTime @updatedAt
+// }
+
+model tbl_boc_logins{
+    id Int        @id @default(autoincrement())
+    usuario       String @unique
+    pass          String
+    tipo_usuario  String?
+    correo        String @unique
+    territorio    String?
+    observacion   String?
+    log           String?
+    fecha_log     DateTime
 }
