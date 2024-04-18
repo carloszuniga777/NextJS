@@ -1,5 +1,4 @@
-
-//import style from '@/modules/auth/components/auth.module.css'
+import style from '@/modules/auth/styles/auth.module.css'
 import { LoginForm } from "@/modules/auth/login/LoginForm";
 
 
@@ -11,17 +10,11 @@ export const metadata = {
 
 export default function LoginPage() {
 
-  
-  return (
-  
-      <LoginForm/>
-   
-  );
-
-  /*
-  return (
-    <main className={`h-[calc(100vh-2rem)] flex justify-center items-center ${style.body}`}>
-      <LoginForm/>
-    </main>
-  );*/
+return( 
+        <main className={`h-[100vh] ${style.body}`}>
+              <section className='flex justify-center items-center pt-3'>
+                  <LoginForm/>
+              </section> 
+          </main>
+      );
 }
