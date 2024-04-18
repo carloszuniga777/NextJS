@@ -17,9 +17,9 @@ export function RegisterForm(){
 
     //Se envia el formulario al backend por medio de una A  API-REST
     //handleSubmit obtiene la data que se envia del submit de los inputs del formulario como un objeto
-    const onSubmit = handleSubmit( async({username, email, password, confirmPassword}) => {
+    const onSubmit = handleSubmit( async({username, email, password, confirmPassword, tipo_usuario, territorio, observacion}) => {
         
-   
+    
         //Si la contraseña es diferente 
         if(password !== confirmPassword){
             return alert('Passwords no coincide')
@@ -28,7 +28,10 @@ export function RegisterForm(){
        //Registra el usuario - User Userver         
        const res = await registarUsuario({  usuario: username, 
                                             correo: email, 
-                                            contrasena:password
+                                            contrasena:password,
+                                            tipo_usuario: tipo_usuario,
+                                            territorio: territorio,
+                                            observacion: observacion
                                         })           
       
 
@@ -100,8 +103,8 @@ export function RegisterForm(){
                                 <label htmlFor="tipo_usuario"  className='class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"'>Tipo Usuario:</label>
                                 <select id="tipo_usuario"
                                         {...register('tipo_usuario')} 
-                                        className="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option className='text-center' selected>Seleccionar</option>
+                                        className="mb-4 w-[13rem] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option className='text-center' value='' selected>Seleccionar</option>
                                     <option  value="Interno">Interno</option>
                                     <option  value="Externo">Externo</option>
                                 </select>
@@ -122,7 +125,7 @@ export function RegisterForm(){
                                             register={register} 
                                 />
 
-                        </div>  
+                            </div>  
                     </div>
                     <div className='w-full flex flex-row justify-center'>
                             <button className='w-2/3 bg-blue-500 text-white p-3 rounded-lg'>
