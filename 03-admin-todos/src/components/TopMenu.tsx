@@ -1,8 +1,34 @@
 //snippet rafc
 
-import { CiBellOn, CiChat1, CiMenuBurger, CiSearch } from "react-icons/ci"
+import { CiBellOn, CiChat1, CiMenuBurger, CiSearch, CiShoppingCart } from "react-icons/ci"
+import { cookies } from 'next/headers';
+import Link from "next/link";
+
+
+//Obteniendo el total de productos que hay en el carrito de compras que el usuario selecciono, para mostrarlos en las notificaciones del top menu
+const getTotalCount = (cart: { [id:string]:number } ):number=>{
+    let items = 0
+    
+    //Obteniendo los valores de los productos del carrito de compras atraves de las cookies
+    Object.values( cart ).forEach( value =>{
+            //console.log(value)                   //Si el usuario selecciono 2 camisas, 1 pantalon, en las cookies se recibe como valor 2, 1, esos valores son sumados al items
+        items += value                             //Se suma el total de items seleccionados 
+    })
+
+    return items
+}
+
 
 export const TopMenu = () => {
+
+    //Configuracion de Cookie
+    const cookieStore = cookies()                                                    // Se otienen las cookies   
+    const cart = JSON.parse(cookieStore.get('cart')?.value ?? '{}')                 // Se obtienen las cookies del carrito de compra | Tipado: {[id:string]:number}   el id es de tipo string y el valor de tipo number
+
+    const totalItems = getTotalCount(cart)                                          //Obtiene el total de items seleccionados            
+
+
+
   return (
           <div className="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
 
@@ -30,9 +56,17 @@ export const TopMenu = () => {
                     <button className="flex items-center justify-center w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200">
                         <CiChat1 size={25} />
                     </button>
-                    <button className="flex items-center justify-center w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200">
-                        <CiBellOn size={25}/>
-                    </button>
+
+                    {/**Carrito de compras*/}
+                    <Link
+                         href={'/dashboard/cart'} 
+                         className="p-2 flex items-center justify-center  h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200">
+                        {
+                          ( totalItems > 0 ) && (<span className="text-md mr-2 text-blue-800 font-bold">{ totalItems }</span>)
+                        }
+                        <CiShoppingCart size={25}/>
+                    </Link>
+
                 </div>
             </div>
         </div>

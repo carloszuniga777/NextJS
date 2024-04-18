@@ -6,6 +6,7 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/todos/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -17,5 +18,13 @@ const config: Config = {
     },
   },
   plugins: [],
+  
+  //Se agrego para poder generar dinamicamente las clases cuando estas se concatenan, ej: grid-cols-${var}
+  //En cada clase computada, se tiene que agregar aqui, para que tailwind las reconozca
+  safelist: [
+    {
+      pattern: /grid-cols-./,
+    },
+  ],
 };
 export default config;
