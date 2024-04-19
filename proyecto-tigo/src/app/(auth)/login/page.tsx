@@ -11,8 +11,8 @@ export const metadata = {
 export default function LoginPage() {
 
 return( 
-        <main className={`h-[100vh] ${style.body}`}>
-              <section className='flex justify-center items-center pt-3'>
+        <main className={`h-[100vh] ${style.body} flex flex-col justify-center`}>
+              <section className='flex flex-col justify-center items-center pt-3'>
                   <LoginForm/>
               </section> 
           </main>

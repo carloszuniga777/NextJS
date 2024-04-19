@@ -52,15 +52,16 @@ export function RegisterForm(){
    
   return (
 
-        <form onSubmit={onSubmit} className='w-2/3'autoComplete="off">
+        <form onSubmit={onSubmit}  className='md:max-w-[48%] lg:max-w-[48%] p-[0rem 5rem 0rem 5rem]' 
+                autoComplete="off">
              {err && (<p className='bg-red-700 text-lg text-white p-3  text-center rounded-lg mb-4'>{err}</p>)}  
              {registrado && (<p className='bg-green-300 text-lg p-3 text-center rounded-lg mb-4'>{registrado}</p>)}
             <section className={`pt-4`}>
-                <h1 className='text-slate-200 font-bold text-4xl mb-4 text-center'>Registrar</h1>
-                <div className='bg-white rounded-lg pt-4 pb-10'>
+                <h1 className='text-slate-950 font-bold text-4xl mb-4 text-center'>Registrar</h1>
+                <div className='bg-white rounded pt-4 pb-10'>
 
-                    <div className=' grid grid-cols-2'>
-                        <div className='w-[60%] flex flex-col items-center pl-10'>
+                    <div className='md:grid md:grid-cols-2 lg:grid lg:grid-cols-2'>
+                        <div className='w-full flex flex-col items-center p-3 md:pl-10 lg:pl-10'>
                                 <TextInputField 
                                             name='username'    
                                             label='Usuario'    
@@ -68,6 +69,8 @@ export function RegisterForm(){
                                             placeholder='Usuario123' 
                                             register={register} 
                                             errors={errors.username}
+                                            clase = 'mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                            obligatoryField = { true }
                                 />
 
                                 <TextInputField 
@@ -77,6 +80,8 @@ export function RegisterForm(){
                                             placeholder='user@email.com' 
                                             register={register} 
                                             errors={errors.email}
+                                            clase = 'mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                            obligatoryField = { true }
                                 />
 
                                 <TextInputField 
@@ -86,6 +91,8 @@ export function RegisterForm(){
                                             placeholder='***********' 
                                             register={register} 
                                             errors={errors.password}
+                                            clase = 'mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                            obligatoryField = { true }
                                 />
 
                                 
@@ -96,18 +103,22 @@ export function RegisterForm(){
                                             placeholder='***********' 
                                             register={register} 
                                             errors={errors.confirmPassword}
+                                            clase = 'mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                            obligatoryField = { true }
                                 />
                         </div>
-                        <div className='w-1/2 flex flex-col items-center'>
+                        <div className='flex flex-col items-center m-2'>
                         
+                             <div className='flex flex-col items-center w-full mt-[-1rem] mb:mt-2 lg:mt-2'>
                                 <label htmlFor="tipo_usuario"  className='class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"'>Tipo Usuario:</label>
                                 <select id="tipo_usuario"
                                         {...register('tipo_usuario')} 
-                                        className="mb-4 w-[13rem] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        className="mb-3 w-[35%] md:w-[80%] lg:w-[80%] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option className='text-center' value='' selected>Seleccionar</option>
                                     <option  value="Interno">Interno</option>
                                     <option  value="Externo">Externo</option>
                                 </select>
+                             </div>
 
                                 <TextInputField 
                                             name='territorio'    
@@ -115,6 +126,8 @@ export function RegisterForm(){
                                             type='text'    
                                             placeholder='T1' 
                                             register={register} 
+                                            clase = 'mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                            obligatoryField = { false }
                                 />
 
                                 <TextInputField 
@@ -123,6 +136,8 @@ export function RegisterForm(){
                                             type='text'    
                                             placeholder='CVE' 
                                             register={register} 
+                                            clase = 'mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                            obligatoryField = { false }
                                 />
 
                             </div>  
