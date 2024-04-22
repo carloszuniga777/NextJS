@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 
-export default function LoginPage() {
+export  default async function LoginPage() {
 
 return( 
         <main className={`h-[100vh] ${style.body} flex flex-col justify-center`}>
