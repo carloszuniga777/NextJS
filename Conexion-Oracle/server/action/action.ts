@@ -23,14 +23,13 @@ export async function obtenerData():Promise<Equipos[]>{
 
         //    console.log("Result is:", data?.rows);
 
-        
-        await response?.close()    //Cerrando conexion de la base de datos 
-
 
         return data?.rows as Equipos[]
 
     }catch(error){
         reportError({message: getErrorMessage(error)})
+    }finally{
+        await response?.close()    //Cerrando conexion de la base de datos 
     }
 
     return [];
