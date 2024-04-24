@@ -1,7 +1,7 @@
-import NextAuth from "next-auth/next";                                //Instalar NextAuth: npm i next-auth para la autenticacion
-import CredentialsProvider from "next-auth/providers/credentials";   //Para loggearse con usuario y contraseña     
 import db from '@/libs/db';
 import bcrypt from 'bcrypt';
+import NextAuth from "next-auth/next"; //Instalar NextAuth: npm i next-auth para la autenticacion
+import CredentialsProvider from "next-auth/providers/credentials"; //Para loggearse con usuario y contraseña     
 
 interface User {
     id: string,
@@ -73,7 +73,7 @@ export const authOptions= {
 const handler = NextAuth(authOptions)
 
 //Se exporta y se utilizara tanto para peticiones GET o POST
-export {handler as GET, handler as POST}
+export { handler as GET, handler as POST };
 
 /*
   NextAuth proporciona un formulario de inicio de sesion incorporado

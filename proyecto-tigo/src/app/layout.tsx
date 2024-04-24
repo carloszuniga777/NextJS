@@ -1,9 +1,9 @@
-import { Navbar } from '@/modules/navegacion/Navbar';
+import { Navbar } from "@/modules/navegacion/Navbar";
 import type { Metadata } from "next";
-import { Inter, Noto_Sans, Open_Sans } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Open_Sans({ subsets: ["latin"] });
+const inter = Noto_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar/> 
+        <Navbar />
         {children}
       </body>
     </html>
