@@ -1,12 +1,13 @@
 "use client";
 
-import { signIn } from "next-auth/react"; //Autenticacion
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react"; //para los errores
 import { useForm } from "react-hook-form"; //Validador del formulario
 import { TextInputField } from "../components/TextInputField";
 import style from "../styles/auth.module.css";
+
+import { useRouter } from "next/navigation";
+import { login } from "../actions/login";
 
 export const LoginForm = () => {
   const {
@@ -14,26 +15,19 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const router = useRouter();
+
   const [error, setError] = useState<string | null>(null);
+
+  const route = useRouter();
 
   //Envio del formulario
   const onSubmit = handleSubmit(async ({ username, password }) => {
-    //Autentica si el usuario existe o no
-    const res = await signIn("credentials", {
-      username: username,
-      password: password,
-      redirect: false, //Para que no redirija al formulario que tiene por defecto NextAuth
+    route.refresh(); //refresca la pagina
+
+    await login({ username, password }).then((data) => {
+      //envia el la informacion del usuario al backend por server action y procede a validar si el usuario existe o no
+      setError(data?.error as string);
     });
-
-    // console.log('res', res)
-
-    if (res?.error) {
-      setError(res.error);
-    } else {
-      router.push("/dashboard"); //Si el usuario existe redirecciona a la pagina de inicio
-      router.refresh();
-    }
   });
 
   return (
@@ -62,7 +56,9 @@ export const LoginForm = () => {
                 type="text"
                 placeholder="Usuario"
                 register={register}
-                errors={errors.email}
+                errors={errors.username}
+                clase="mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                obligatoryField={true}
               />
 
               <TextInputField
@@ -72,6 +68,8 @@ export const LoginForm = () => {
                 placeholder="****************"
                 register={register}
                 errors={errors.password}
+                clase="mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                obligatoryField={true}
               />
 
               <button className=" bg-blue-500 text-white p-3 rounded-lg w-full">

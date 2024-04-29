@@ -1,7 +1,6 @@
 import Link from 'next/link'
-import {getServerSession} from 'next-auth/next'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import Image from 'next/image'
+import { auth } from '@/auth'
 
 
 /*
@@ -23,8 +22,8 @@ const menuItemLogin = [
 
 export const Navbar = async() => {
 
-  const session = await getServerSession(authOptions)
-
+   const session = await auth()
+  
   //console.log(session)  
 
 
