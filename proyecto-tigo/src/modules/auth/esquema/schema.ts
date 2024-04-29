@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from "zod";  //Instalar: npm install zod
 
 //Verificacion de datos con Zod: https://authjs.dev/getting-started/authentication/credentials
 //Para mejorar la seguridad, se valida las entradas que coincidan con lo que esperamos

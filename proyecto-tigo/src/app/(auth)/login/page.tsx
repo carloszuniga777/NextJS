@@ -1,3 +1,4 @@
+
 import style from '@/modules/auth/styles/auth.module.css'
 import { LoginForm } from "@/modules/auth/login/LoginForm";
 
@@ -9,7 +10,7 @@ export const metadata = {
 
 
 export  default async function LoginPage() {
-
+  
 return( 
         <main className={`h-[100vh] ${style.body} flex flex-col justify-center`}>
               <section className='flex flex-col justify-center items-center pt-3'>

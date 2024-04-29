@@ -1,4 +1,4 @@
-import { Pool } from "pg";   //Instalar: npm i pg | Documentacion: https://node-postgres.com/
+import { Pool } from "pg";   //Instalar: npm i pg | instalar tipos: npm i --save-dev @types/pg | Documentacion: https://node-postgres.com/
 
 
 export const pool = new Pool({
@@ -9,8 +9,10 @@ export const pool = new Pool({
     port: process.env.PORT_NUMBER ? parseInt(process.env.PORT_NUMBER, 10) : 5432
 })
 
-/* Para verificar la conexion al servidor
 
+
+// Para verificar la conexion al servidor
+/*
 export default async function dbConnect(){
     await pool.connect((err,client, release)=>{
         if(err){

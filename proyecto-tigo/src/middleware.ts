@@ -1,25 +1,19 @@
-//https://authjs.dev/getting-started/migrating-to-v5
+//documentacion: https://authjs.dev/getting-started/migrating-to-v5
 
-import authConfig from "@/auth.config"
-import NextAuth from "next-auth"
+import { auth } from "./auth";
 
 const authRoutes = ["/", "/login"]                  //Estas rutas son usadas para autenticacion
-const apiAuth = "/api/auth";                        //Estas rutas son usadas para api autenticacion    
 const DEFAULT_LOGIN_REDIRECT = "/dashboard";        //Ruta de redireccionamiento
 
-const {auth}=NextAuth(authConfig)
 
 
 export default auth((req) => {
+   
     const { nextUrl } = req                  //Se obtiene la informacion de la url donde navega el usuario
     const isLoggedIn = !!req.auth           //Se obtiene el estatus del usuario, si esta authenticado o no
+ 
 
-    const isApiAuth = nextUrl.pathname.startsWith(apiAuth)
     const isAuthRoutes = authRoutes.includes(nextUrl.pathname)
-
-    if(isApiAuth){
-        return null
-    }
 
      //Si el usuario se encuentra en la ruta login   
     if(isAuthRoutes){                        
@@ -28,15 +22,13 @@ export default auth((req) => {
         if(isLoggedIn){
             return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
         }
-        return null
     }
 
     //Si usuario no esta autenticado, y quiere acceder a otra pagina, lo redirige por defecto al login
    if(!isLoggedIn && !isAuthRoutes){
      return Response.redirect(new URL('/login', nextUrl))
    }
-
-   return null
+   
 })
 
 

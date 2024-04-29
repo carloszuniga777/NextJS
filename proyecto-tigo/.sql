@@ -1,14 +1,5 @@
 
-#Variable de entorno de configuracion de la base de datos
-USER='tigo'
-HOST_NAME='localhost'
-DB_NAME='postgres'
-DB_PASSWORD='postgres'
-PORT_NUMBER=5432
-
-
-#creacion de tabla POSTGRES
-CREATE TABLE tbl_boc_logins (
+CREATE TABLE tigo.tbl_boc_logins (
     id SERIAL PRIMARY KEY,
     usuario TEXT NOT NULL,
     tipo_usuario TEXT,

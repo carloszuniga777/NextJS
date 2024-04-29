@@ -1,7 +1,7 @@
 'use client'
 
-import {useForm} from 'react-hook-form'   //Validador del formulario 
-import { useState, useTransition } from 'react'         //para los errores   
+import {useForm} from 'react-hook-form'   //Validador del formulario | instalar: npm install react-hook-form
+import { useState, useTransition } from 'react'     //para los errores   
 import style from '../styles/auth.module.css'
 import { TextInputField } from '../components/TextInputField'
 import Image from 'next/image'

@@ -1,24 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { auth } from '@/auth'
+import { ButtonSignOuth } from './ButtonSignOut';
 
-
-/*
-const menuItemLogin = [
-  {
-    path: '/',
-    title: 'Inicio'
-  },
-  {
-    path: '/login',
-    title: 'Ingresar' 
-  },
-  {
-    path: '/register',
-    title: 'Registrar'
-  }
-]
-*/
 
 export const Navbar = async() => {
 
@@ -36,10 +20,6 @@ export const Navbar = async() => {
       path: '/register',
       title: 'Registrar'
     },
-    {
-      path: '/api/auth/signout',
-      title: 'Cerrar Session' 
-    }
   ]
   
 
@@ -59,7 +39,7 @@ export const Navbar = async() => {
                             ))
                         )    
                     }  
-                              
+                  <li><ButtonSignOuth/></li>
                 </ul>
             </nav>
 

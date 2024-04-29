@@ -1,17 +1,22 @@
 'use server'
- import { connection } from "../database"
- 
+
+ import { pool } from "../database"
+ //import dbConnect from "../database"
+
  
 export async function obtenerUsuario(usuario:string) {
 
   try{
+    
+      //dbConnect()  
+
       const query = { text: 'select usuario, pass from tbl_boc_logins where usuario =$1',
                       values: [usuario]
       }
   
-      const response = await connection.query({query})
+      const response = await pool.query(query)
       
-      return response
+      return response.rows[0]
  
    }catch(e){
      return {error: 'Error al obtener el usuario'}
@@ -22,14 +27,16 @@ export async function obtenerUsuario(usuario:string) {
 
 
 
-export async function obtenerTodosUsuario(usuario:string) {
+export async function obtenerTodosUsuario() {
 
     try{
-        const query = { text: 'select usuario, pass from tbl_boc_logins'}
-    
-        const response = await connection.query({query})
+       //  dbConnect()  
         
-        return response
+         const query = { text: 'select usuario, pass from tbl_boc_logins'}
+    
+         const response = await pool.query(query)
+        
+        return response.rows
    
      }catch(e){
        return {error: 'Error al obtener el usuario'}
@@ -38,34 +45,35 @@ export async function obtenerTodosUsuario(usuario:string) {
   }
 
 
+
+
   interface Props{
     usuario: string,
     pass: string
   }
   
+
+
 export async function insertarUsuario({usuario, pass}:Props) {
 
 
     try{
-        const query = { text: `insert into tbl_boc_logins(usuario, pass)
-                               values($1, $2)`,         
+
+      //  dbConnect()  
+      
+        const query = { text: `insert into tbl_boc_logins(usuario, pass) values($1, $2) RETURNING *`,         
                         values:[usuario, pass]        
                       }
-   
-                      console.log('aqui')   
+                      
+                      console.log('query', query)   
 
-        const response = await connection.query({query})
-       
-        console.log('alla')  
-        
-        console.log(response.rows[0])
 
-        
+        const response = await pool.query(query)
        
-        return response
+        return response.rows[0]
    
      }catch(e){
-       return {error: 'Error al obtener el usuario'}
+       return {error: `Error al obtener el usuario`}
     }  
   
   }
