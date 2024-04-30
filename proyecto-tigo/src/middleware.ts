@@ -14,6 +14,7 @@ export default auth((req) => {
  
 
     const isAuthRoutes = authRoutes.includes(nextUrl.pathname)
+    
 
      //Si el usuario se encuentra en la ruta login   
     if(isAuthRoutes){                        
@@ -36,6 +37,6 @@ export default auth((req) => {
 export const config = { 
     matcher: [  "/dashboard/:path*", 
                 "/register/:path*",
-                "/((?!api|_next/static|_next/image|favicon.ico).*)",
+                //"/((?!api|_next/static|_next/image|favicon.ico).*)",
             ]
 }

@@ -39,7 +39,7 @@ export const LoginForm = () => {
                 {error && (<p className='bg-red-700 text-lg text-white p-3  text-center rounded-lg mb-4'>{error}</p>)}       
                 <section className={` ${style.card} ${style.cardLoggin}`}>
                         <figure className='flex flex-row justify-center w-full mb-3'>
-                            <Image src={'/Logo-Sales-Operations.png'} alt="Logo Sales Operation" className='w-[80%]' width={1000} height={1000}/>
+                            <Image priority src={'/Logo-Sales-Operations.png'} alt="Logo Sales Operation" className='w-[80%]' width={1000} height={1000}/>
                         </figure>
                         <div className='bg-white rounded-lg pt-5 pb-10 flex justify-center'>
                             <div>                                
@@ -68,7 +68,7 @@ export const LoginForm = () => {
                                     Iniciar Sesion
                                 </button>
                                 <figure className='flex flex-row justify-center w-full mt-3'>
-                                    <Image src={"/Logo_Sangre_Tigo.png"} alt="Logo Sales Operation" className='w-[40%]' width={100} height={100}/>
+                                    <Image priority src={"/Logo_Sangre_Tigo.png"} alt="Logo Sales Operation" className='w-[40%]' width={100} height={100}/>
                                 </figure>
                             </div>
                         </div>
