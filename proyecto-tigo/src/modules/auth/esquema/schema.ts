@@ -5,4 +5,5 @@ import * as z from "zod";  //Instalar: npm install zod
 export const LoginSchema = z.object({
     username: z.string().min(1, {message: 'Usuario es requerido'}),
     password: z.string().min(1, {message: "Contraseña es requerido"}),
+    twoFactorCode: z.optional(z.string())
 });

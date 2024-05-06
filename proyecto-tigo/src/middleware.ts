@@ -1,9 +1,14 @@
 //documentacion: https://authjs.dev/getting-started/migrating-to-v5
 
-import { auth } from "./auth";
+import authConfig from "@/auth.config";
+import NextAuth from "next-auth";
+
 
 const authRoutes = ["/", "/login"]                  //Estas rutas son usadas para autenticacion
 const DEFAULT_LOGIN_REDIRECT = "/dashboard";        //Ruta de redireccionamiento
+
+
+export const { auth } = NextAuth(authConfig);
 
 
 
@@ -37,6 +42,5 @@ export default auth((req) => {
 export const config = { 
     matcher: [  "/dashboard/:path*", 
                 "/register/:path*",
-                //"/((?!api|_next/static|_next/image|favicon.ico).*)",
             ]
 }

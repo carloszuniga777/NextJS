@@ -11,7 +11,7 @@ export async function getUserApi({username}: username){
                     method: 'POST',
                     body: JSON.stringify({ username: username}),
                     headers: {
-                        'Contet-Type': 'application/json'
+                        'Content-Type': 'application/json'
                     }
                 }
             ).then(res => res.json())

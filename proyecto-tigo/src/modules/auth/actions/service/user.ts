@@ -1,5 +1,6 @@
 'use server'
 
+import { getErrorMessage } from '@/functions/error';
 import { pool } from '@/server/database';
 
 interface userdb{
@@ -14,6 +15,8 @@ interface userdb{
 //Consulta desde la base de datos si el email del usuario existe, en caso de existir, devuelve la informacion del usuario
 export async function getEmail(correo:string):Promise<userdb>{
 
+     const client  = await pool.connect();              //iniciando la conexion
+
     try{
   
         const query = { text: `select id,
@@ -25,12 +28,14 @@ export async function getEmail(correo:string):Promise<userdb>{
                       }
   
                       
-        const response = await pool.query(query)
+        const response = await client.query(query)         //realizando la consulta en la base de datos 
         
         return response.rows[0]
    
-     }catch(e){
-       throw 'Error al obtener el correo del usuario'
+     }catch(error){
+       throw `Error: ${getErrorMessage(error)}` 
+    }finally{
+        client.release()                   //liberando la conexion
     }  
   
   }
@@ -41,7 +46,9 @@ export async function getEmail(correo:string):Promise<userdb>{
 
 //Consulta desde la base de datos si el username del usuario existe, en caso de existir, devuelve la informacion del usuario
   export async function getUser(usuario:string):Promise<userdb>{
- 
+    
+    const client  = await pool.connect();              //iniciando la conexion
+
     try {
         
         
@@ -54,16 +61,50 @@ export async function getEmail(correo:string):Promise<userdb>{
                          values: [usuario]
                       }
                         
-        const response = await pool.query(query)
+        const response = await client.query(query)    //realizando la consulta en la base de datos  
         
         return response.rows[0]
 
 
     } catch (error) {
-        throw 'Error al obtener el usuario'        
+        throw `Error: ${getErrorMessage(error)}`      
+    }finally{
+      client.release()                                //liberando la conexion
     }
 
   }
+
+
+
+export async function getUserByID(id:string):Promise<userdb>{
+    
+  const client  = await pool.connect();              //iniciando la conexion
+
+  try {
+      
+      
+      const query = { text: `select 
+                                    id,
+                                    usuario, 
+                                    correo, 
+                                    pass 
+                              from tbl_boc_logins where id =$1`,
+                       values: [id]
+                    }
+                      
+      const response = await client.query(query)    //realizando la consulta en la base de datos  
+      
+      return response.rows[0]
+
+
+  } catch (error) {
+      throw `Error: ${getErrorMessage(error)}`         
+  }finally{
+    client.release()                                //liberando la conexion
+  }
+
+}
+
 
   interface createUserDB{
     usuario: string,
@@ -76,7 +117,11 @@ export async function getEmail(correo:string):Promise<userdb>{
 
   //Inserta en la base de datos la informacion del usuario: correo, contrasena, etc
   export async function createNewUser({usuario, pass, correo, tipo_usuario, territorio, observacion}:createUserDB){
-        try {
+        
+      const client = await pool.connect()       //iniciando la conexion
+
+      try {
+               await client.query('BEGIN')      //inicio del proceso
 
                const fechaActual = new Date().toISOString();  
             
@@ -86,12 +131,20 @@ export async function getEmail(correo:string):Promise<userdb>{
                              } 
 
                
-                const response = await pool.query(query)    
-                
+                const response = await client.query(query)    //insercion en la base de datos
+               
+                await client.query('COMMIT')                   //commit 
+
                 return response.rows[0]
 
             
         } catch (error) {
-            throw 'Error al momento de crear el usuario'
+
+            await client.query('ROLLBACK')                        //rollback
+
+            throw `Error: ${getErrorMessage(error)}`  
+            
+        }finally{
+          client.release()                                       //libera la conexion una vez finalizado de usar   
         }
   }

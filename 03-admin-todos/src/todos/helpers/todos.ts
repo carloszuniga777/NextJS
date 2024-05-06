@@ -30,7 +30,7 @@ export const updateTodo = async(id: string, complete: boolean):Promise<Todo> =>{
             method: 'PUT',
             body: JSON.stringify(body),
             headers: {
-                'Contet-Type': 'application/json'
+                'Content-Type': 'application/json'
             }
         }
     ).then(res => res.json())
@@ -55,7 +55,7 @@ export const createTodo = async(description: string):Promise<Todo> =>{
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
-                'Contet-Type': 'application/json'
+                'Content-Type': 'application/json'
             }
         }
     ).then(res => res.json())

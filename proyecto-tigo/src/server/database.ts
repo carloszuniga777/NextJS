@@ -8,22 +8,3 @@ export const pool = new Pool({
     password: process.env.DB_PASSWORD,
     port: process.env.PORT_NUMBER ? parseInt(process.env.PORT_NUMBER, 10) : 5432
 })
-
-
-
-// Para verificar la conexion al servidor
-/*
-export default async function dbConnect(){
-    await pool.connect((err,client, release)=>{
-        if(err){
-            return console.error("Error in connection", err.stack)
-        }
-        client?.query("SELECT NOW()", (err, result)=>{
-            release()
-            if(err){
-                return console.error("Error in query execution", err.stack)
-            }
-        })
-    })
-}
-*/

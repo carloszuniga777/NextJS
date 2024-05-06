@@ -2,7 +2,7 @@
 
 //Instalar react hook form para validar el formulario: npm i react-hook-form
 import {useForm} from 'react-hook-form'         //Validador del formulario 
-import { TextInputField } from '@/modules/auth/components/TextInputField'
+import { TextInputField } from '@/components/TextInputField'
 import { registarUsuario } from '../actions/register'
 import { useState } from 'react'
 
