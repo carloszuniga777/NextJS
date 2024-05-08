@@ -15,6 +15,7 @@ export async function getTwoFactorTokenByToken(token: string){
                            userid, 
                            usuario, 
                            token, 
+                           confirmation,
                            expires 
                     from tbl_twofactortoken
                     where token = $1`,
@@ -45,11 +46,12 @@ export async function getTwoFactorTokenByUser(username: string){
              text: `select  id, 
                             userid,
                             usuario, 
-                            token, 
+                            token,
+                            confirmation, 
                             expires 
                      from tbl_twofactortoken
                      where usuario = $1`,
-             values: [username]
+             values: [username.toUpperCase().trim()]
          }
  
          const response = await client.query(query)         //realizando la consulta en la base de datos 
@@ -67,7 +69,7 @@ export async function getTwoFactorTokenByUser(username: string){
 
 
 /**Esta funcion es usada para obtener el tocken usando el usuario*/
-export async function getTwoFactorTokenByUserId(userID: string){
+export async function getTwoFactorTokenByUserId(userID: number){
     const client = await pool.connect()
  
     try {
@@ -76,7 +78,8 @@ export async function getTwoFactorTokenByUserId(userID: string){
              text: `select  id, 
                             userid,
                             usuario, 
-                            token, 
+                            token,
+                            confirmation, 
                             expires 
                      from tbl_twofactortoken
                      where userid = $1`,
@@ -100,7 +103,41 @@ export async function getTwoFactorTokenByUserId(userID: string){
 
 
 
+ export async function confirmToken(usuario:string){
+    const client = await pool.connect()
+
+    try {
+        
+        await client.query('BEGIN')      //inicio del proceso
+
+        const query = {
+            text:  `update tbl_twofactortoken
+                    set confirmation = true
+                    where usuario = $1`,
+            values: [usuario.toUpperCase().trim()]
+        }
+
+        const response = await client.query(query)     //realizando la consulta en la base de datos 
+         
+        await client.query('COMMIT')                   //commit 
+
+        return response.rows[0]
+   
+        
+    } catch (error) {
+        
+        await client.query('ROLLBACK')            //rollback
+
+        throw `Error: ${getErrorMessage(error)}`
+    }finally{
+        client.release()                          //libera la conexion una vez finalizado de usar   
+    }
+}
+
+
+
  //Elimina el Token por usuario
+ 
 export async function deleteTwoFactorToken(usuario:string){
     const client = await pool.connect()
 
@@ -111,7 +148,7 @@ export async function deleteTwoFactorToken(usuario:string){
         const query = {
             text: `delete from tbl_twofactortoken
                    where usuario = $1`,
-            values: [usuario]
+            values: [usuario.toUpperCase().trim()]
         }
 
         const response = await client.query(query)     //realizando la consulta en la base de datos 
@@ -135,6 +172,7 @@ export async function deleteTwoFactorToken(usuario:string){
 
 
  //Elimina el Token por userID
+ 
 export async function deleteTwoFactorTokenByID(id:string){
     const client = await pool.connect()
 
@@ -188,7 +226,7 @@ export async function createTwoFactorToken({username, userID, token, expires}:To
         const query = {
             text: `insert into tbl_twofactortoken(usuario, userid, token, expires)
                    values ($1, $2, $3, $4) RETURNING *`,
-            values: [username, userID, token, expires]
+            values: [username.toUpperCase().trim(), userID, token, expires]
         }
 
         const response = await client.query(query)     //realizando la consulta en la base de datos 

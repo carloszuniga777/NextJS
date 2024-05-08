@@ -2,7 +2,7 @@
 
 //Instalar react hook form para validar el formulario: npm i react-hook-form
 import {useForm} from 'react-hook-form'         //Validador del formulario 
-import { TextInputField } from '@/components/TextInputField'
+import { TextInputField } from '@/components/form/TextInputField'
 import { registarUsuario } from '../actions/register'
 import { useState } from 'react'
 
@@ -35,11 +35,6 @@ export function RegisterForm(){
                                         })           
       
 
-                                    
-
-       //const resJSON = await res.json()   //dato recibido del backend convertido a json
-       //console.log(resJSON)  
-       //console.log('res', res) 
        
        //Si el usuario se creo correctamente lo redirecciona al login para que pueda ingresar
        if(res.ok){

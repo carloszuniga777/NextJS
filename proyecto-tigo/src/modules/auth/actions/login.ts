@@ -8,7 +8,7 @@ import { generateTwoFactorToken } from '../token/token';
 import { sendTwoFactorTokenEmail } from '../endpoints/emailApi';
 import { getUser } from './service/user';
 import { compare } from 'bcryptjs';
-import { getTwoFactorTokenByUser } from './service/twoFactorToken';
+import { confirmToken, getTwoFactorTokenByUser } from './service/twoFactorToken';
 
 
  
@@ -19,7 +19,8 @@ const DEFAULT_LOGIN_REDIRECT = "/dashboard";        //Ruta de redireccionamiento
 export async function login(values: z.infer<typeof LoginSchema>){
     const validatedFields = LoginSchema.safeParse(values)         //Se valida con ZOD, Para mejorar la seguridad, se valida las entradas que coincidan con lo que esperamos
     
-    console.log(validatedFields)
+
+    //console.log(validatedFields)
 
     if(!validatedFields.success){
         return { error: 'Entrada invalida'}
@@ -44,7 +45,8 @@ export async function login(values: z.infer<typeof LoginSchema>){
 
 
 
-            /**
+            /** DOBLE AUTENTICACION
+             * 
              *  Si es un usuario existente, y el usuario ingreso un Token de autenticacion de doble factor 
              *  se procede a validar si tiene un Token vigente
              * 
@@ -54,14 +56,13 @@ export async function login(values: z.infer<typeof LoginSchema>){
 
             if(existingUser){
 
-                console.log({twoFactorCode})
+                 //Se obtiene informacion del token que se le genero al usuario en la base de datos 
+                 const existTwoFactor = await getTwoFactorTokenByUser(username)
 
-                //Si el usuario ingreso un Token  
+
+                //Si el usuario ingreso un codigo de doble verificacion  
                 if(twoFactorCode){
-                    
-                    //Se obtiene informacion del token que se le genero al usuario en la base de datos 
-                    const existTwoFactor = await getTwoFactorTokenByUser(username)
-                      
+                                       
                     //Valida que se le haya generado un Token al usuario  
                      if(!existTwoFactor) return {error: 'Usuario no cuenta con un Token'}
                      
@@ -72,31 +73,33 @@ export async function login(values: z.infer<typeof LoginSchema>){
                      const isExpired = new Date(existTwoFactor.expires) < new Date()  
                       
                      if (isExpired) return {error: 'El código de ya expiro'}
-
-                }else{
                      
-                    //genera el token de doble factor de autenticacion
-                     const twoFactorToken = await generateTwoFactorToken(username)
-                 
-                     //Descomentar
-                    //envia el correo 
-                    /*await sendTwoFactorTokenEmail({
-                            email: 'carlitoseberto@yahoo.com', 
-                            /*email: existingUser.correo,*//*
-                            token: twoFactorToken.token
-                    })*/
+                     //Si el Token ingresado por el usuario es correcto, este lo confirma (TRUE) para evitar que se le pida hasta la proxima semana
+                     await confirmToken(existTwoFactor.usuario)
 
 
-                    return {twoFactor: true} 
+                 /*Si el usuario no ingreso un codigo de doble verificacion, valida si tiene un Token asignado pero que nunca lo confirmo o, 
+                  no tiene ningun Token asignado, se genera un nuevo Token. */   
+                }else if(!existTwoFactor?.confirmation){  
+
+                        //genera el token de doble factor de autenticacion
+                            const twoFactorToken = await generateTwoFactorToken(username)
+                        
+                            //Descomentar
+                        //envia el correo 
+                        /*await sendTwoFactorTokenEmail({
+                                email: 'carlitoseberto@yahoo.com', 
+                                /*email: existingUser.correo,*//*
+                                token: twoFactorToken.token
+                        })*/
+
+                        return {twoFactor: true} 
                 }
 
             }
    
 
-
-
-
-        //Se inicia sesion y redirige a la paigna de /dashboard
+        //Se inicia sesion y redirige a la paigna de inicio /dashboard
         await signIn('credentials', {
             username, 
             password,

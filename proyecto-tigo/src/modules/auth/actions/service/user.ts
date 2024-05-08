@@ -24,7 +24,7 @@ export async function getEmail(correo:string):Promise<userdb>{
                                       correo, 
                                       pass 
                                 from tbl_boc_logins where correo =$1`,
-                         values: [correo]
+                         values: [correo.toLowerCase().trim()]
                       }
   
                       
@@ -58,7 +58,7 @@ export async function getEmail(correo:string):Promise<userdb>{
                                       correo, 
                                       pass 
                                 from tbl_boc_logins where usuario =$1`,
-                         values: [usuario]
+                         values: [usuario.toUpperCase().trim()]
                       }
                         
         const response = await client.query(query)    //realizando la consulta en la base de datos  
@@ -127,7 +127,7 @@ export async function getUserByID(id:string):Promise<userdb>{
             
                const query = { text: `insert into tbl_boc_logins(usuario, pass, correo, territorio, tipo_usuario, observacion, fecha_log)
                                       values($1, $2, $3, $4, $5, $6, $7) RETURNING * `,
-                               values: [usuario, pass, correo, territorio, tipo_usuario, observacion, fechaActual]
+                               values: [usuario.toUpperCase().trim(), pass, correo.toLowerCase().trim(), territorio, tipo_usuario, observacion, fechaActual]
                              } 
 
                

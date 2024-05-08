@@ -6,8 +6,7 @@ import style from '../styles/auth.module.css'
 import { TextInputField } from '../../../components/form/TextInputField'
 import Image from 'next/image'
 
-//import * as z from 'zod'
-//import { LoginSchema } from '../esquema/schema'
+
 import { login } from '../actions/login'
 import { useRouter } from 'next/navigation'
 //import { Modal } from '../../../components/modal/modal';
@@ -35,8 +34,7 @@ export const LoginForm = () => {
     await login({username, password, twoFactorCode}).then(data=>{                 
      
         //Si hay error limpia el formulario y muestra mensaje de error
-        if(data?.error){
-          reset()                             
+        if(data?.error){                           
           setError(data?.error as string)
         }
 
@@ -139,102 +137,3 @@ export const LoginForm = () => {
   )
 
 }
-
-
-
-
-
-
-
-
-
-/*
-export const LoginForm = () => {
-
-  const {register, reset, handleSubmit, formState: {errors}} = useForm()
-  const [error, setError] = useState<string | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  
-  const route = useRouter()
-
-
-
-
-  //Envio del formulario
-  const onSubmit = handleSubmit( async({username, password, twoFactorCode}) =>{
-   
-    route.refresh()                                                 //refresca la pagina
-
-    //Se realiza todo el proceso de autenticacion, en la cual se valida si el usuario existe o no, y su contrasena.
-    await login({username, password, twoFactorCode}).then(data=>{                 
-     
-        //Si hay error limpia el formulario y muestra mensaje de error
-        if(data?.error){
-          reset()                             
-          setError(data?.error as string)
-        }
-
-        //Si se genero un codigo de doble autenticacion 
-        if(data?.twoFactor){
-          setIsModalOpen(true)
-        }
-    }).catch(()=> setError('Algo salio mal'))
-                              
-  })
-
-
-  
-  return( 
-        <>
-            <form onSubmit={onSubmit} className='w-[30%] min-w-80'>
-                {error && (<p className='bg-red-700 text-lg text-white p-3  text-center rounded-lg mb-4'>{error}</p>)}       
-                <section className={` ${style.card} ${style.cardLoggin}`}>
-                        <figure className='flex flex-row justify-center w-full mb-3'>
-                            <Image priority src={'/Logo-Sales-Operations.png'} alt="Logo Sales Operation" className='w-[80%]' width={1000} height={1000}/>
-                        </figure>
-                        <div className='bg-white rounded-lg pt-5 pb-10 flex justify-center'>
-                            <div>                                
-                                <TextInputField 
-                                            name='username'    
-                                            label='Usuario'    
-                                            type='text'    
-                                            placeholder='Usuario'
-                                            register={register} 
-                                            errors={errors.username}
-                                            clase = 'mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                                            obligatoryField = { true } 
-                               />
-                                
-                                <TextInputField  name='password' 
-                                            label='Contraseña' 
-                                            type='password' 
-                                            placeholder='****************' 
-                                            register={register} 
-                                            errors={errors.password}
-                                            clase = 'mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                                            obligatoryField = { true }
-                               />
-                                
-                                <button className=' bg-blue-500 text-white p-3 rounded-lg w-full'>
-                                    Iniciar Sesion
-                                </button>
-                                <figure className='flex flex-row justify-center w-full mt-3'>
-                                    <Image priority src={"/Logo_Sangre_Tigo.png"} alt="Logo Sales Operation" className='w-[40%]' width={100} height={100}/>
-                                </figure>
-                            </div>
-                        </div>
-                </section>
-                
-                {/*
-                  <Modal isOpen={isModalOpen} onClose={()=>{setIsModalOpen(false)}}>
-                    <ContentModalTwoFactor  register={register} error={errors.code}/>
-                  </Modal>
-                *//*}
-
-            </form>  
-        </>
-               
-  )
-
-}
-*/

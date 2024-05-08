@@ -35,11 +35,13 @@ export async function GET(request: Request) {
 
         const createTableTwoFactorToken = `CREATE TABLE IF NOT EXISTS tbl_TwoFactorToken(
             "id" SERIAL PRIMARY KEY,
-            "userid" TEXT NOT NULL,
+            "userid" INTEGER NOT NULL,
             "usuario" TEXT NOT NULL,
             "token" TEXT NOT NULL,
+            "confirmation" BOOLEAN DEFAULT FALSE,  
             "expires" TIMESTAMP NOT NULL,
-            UNIQUE ("usuario", "token")
+            "createdAt" DATE NOT NULL DEFAULT CURRENT_DATE, 
+            UNIQUE ("usuario")
         );`
 
           
@@ -49,7 +51,7 @@ export async function GET(request: Request) {
 
             query ={
                     text: `delete from tbl_boc_logins where usuario=$1`,
-                    values: ['carlos.zuniga'] 
+                    values: ['CARLOS.ZUNIGA'] 
                    }
 
              await client.query(query)        
@@ -57,7 +59,7 @@ export async function GET(request: Request) {
          
              query = {  text: `insert into tbl_boc_logins(usuario, pass, correo, territorio, tipo_usuario, observacion, fecha_log)
                               values($1, $2, $3, $4, $5, $6, $7) RETURNING * `,
-                    values: ['carlos.zuniga', '$2a$10$jXOPsIaesAeJPYvYvDdGTOUWdoyinP3svSMBFSoqqSBEd/yBnO/ru', 'carlos.trochez@tigo.com.hn', 'T1', 'Interno', 'CVE', '2024-04-28 04:43:35.424']
+                    values: ['CARLOS.ZUNIGA', '$2a$10$jXOPsIaesAeJPYvYvDdGTOUWdoyinP3svSMBFSoqqSBEd/yBnO/ru', 'carlos.trochez@tigo.com.hn', 'T1', 'Interno', 'CVE', '2024-04-28 04:43:35.424']
                   } 
 
 

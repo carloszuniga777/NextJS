@@ -4,7 +4,8 @@ import authConfig from "@/auth.config"
 import { pool } from "@/server/database"    //Instalar: npm install @auth/pg-adapter pg | Configuracion del adaptador pg: https://authjs.dev/getting-started/adapters/pg
 import PostgresAdapter from "@auth/pg-adapter"
 
-import { deleteTwoFactorTokenByID, getTwoFactorTokenByUserId } from "./modules/auth/actions/service/twoFactorToken"
+import { confirmToken, deleteTwoFactorTokenByID, getTwoFactorTokenByUserId } from "./modules/auth/actions/service/twoFactorToken"
+import { getUserByID } from "./modules/auth/actions/service/user"
 
 
 
@@ -22,20 +23,38 @@ export const {
 	},
 
     callbacks:{
+
+        //Inicio de Session
         async signIn({user, account}){
              console.log('sigIn', {user, account})   
+             
 
              if(!user.id) return false
 
-           // const twoFactorConfirmation = await getTwoFactorTokenByUserId(user.id)
 
-          //  console.log({twoFactorConfirmation})
-
-            //if(!twoFactorConfirmation) return false
-
+            /**Verifica si el usuario existe, si no existe deniega el acceso a traves del middleware
+             * Esto proveé una capa extra de seguridad, ya que hemos hecho lo mismo en la parte del Front End
+             * */ 
+            const existingUser = await getUserByID(user.id)  
+             
+            if(!existingUser){
+                return false
+            } 
             
-            //await deleteTwoFactorTokenByID(user.id)
+           // console.log(existingUser)
 
+            /* Doble Autenticacion
+            
+               Valida que el usuario tenga un Token asignado, en caso que no lo tenga no le permite pasar.
+               Si tiene un Token asignado, este se marca como verificado. Para permitir el ingreso al portal por 1 semana
+            */
+            const twoFactorConfirmation = await getTwoFactorTokenByUserId(existingUser.id)
+
+
+            if(!twoFactorConfirmation) return false
+
+             //Si el usuario tiene token, lo confirma (TRUE) para evitar que se le pida hasta la proxima semana
+            await confirmToken(twoFactorConfirmation.usuario)
 
             return true
         },
