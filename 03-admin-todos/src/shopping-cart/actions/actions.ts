@@ -53,3 +53,25 @@ export const removeProductFromCart = (id:string)=>{
     delete cookieCart[id]                            //Se elimina la cookie con el id correspondiente
     setCookie('cart', JSON.stringify(cookieCart))    //Guarda en la cookie cart
 }
+
+
+//------------------------------------------------------------------------------
+
+//Eliminacion de productos de carrito de compras (page)
+export const removeSingleItemFromCart = (id: string)=>{
+    const cookieCart = getCookieCart()
+    
+    if(!cookieCart[id]) return
+
+    const itemsInCart = cookieCart[id] - 1
+
+    if(itemsInCart <= 0){                       //Si la cantidad de productos es menor a cero se elimina de la cookie
+        delete cookieCart[id]
+    }else{                                      //De lo contrario, actualiza el nuevo valor                
+        cookieCart[id] = itemsInCart
+    }
+
+    setCookie('cart', JSON.stringify(cookieCart))   //guarda en la cookie cart
+
+}
+

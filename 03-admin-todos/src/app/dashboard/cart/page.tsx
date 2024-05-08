@@ -3,6 +3,7 @@
 import { products, type Product } from "@/app/products/data/products";
 import { ItemCard } from "@/shopping-cart";
 import { cookies } from "next/headers";
+import { WidgetItem } from '../../../components/WidgetItem';
 
 
 export const metadata = {
@@ -43,13 +44,16 @@ export default function CartPage() {
   //console.log(cart)
   const productInCart = getProductsInCart(cart)                                               //Se obtiene la informacion de los productos (image, precio, rating) correspondiente a cada cookie almacenada (Nota: Las cookies solo se almacena el id del producto y la cantidad que el usuario selecciono)      
    
+//Suma todos los elementos del array productInCart, para sacar el total a pagar
+  const totalToPay = productInCart.reduce((prev, current)=> (current.product.price * current.quantity) + prev, 0)
 
-
+  
   return (
     <section>
         <h1 className="text-5xl">Productos en el carrito</h1>
         <hr className="mb-2"/>
-        <div className="flex flex-col sm:flex-row gap-2 w-full">
+        <section className="flex flex-col sm:flex-row gap-2 w-full">
+
             <article className="flex flex-col gap-2 w-full sm:8/12">
               {
                  productInCart.map( ({product, quantity}) => (
@@ -57,7 +61,17 @@ export default function CartPage() {
                  ))
               }
             </article>
-        </div>
+
+            <article className="flex flex-col w-full sm:w-4/12">
+               <WidgetItem title="Total a pagar">
+                  <div className="mt-2 flex justify-center gap-4">
+                    <h3 className="text-3xl font-bold text-gray-700">${(totalToPay * 1.15).toFixed(2)}</h3>
+                  </div>
+                    <span className="font-bol text-center text-gray-500">Impuestos 15% ${(totalToPay * 0.15).toFixed(2)}</span>
+              </WidgetItem> 
+            </article>
+
+        </section>
     </section>
   );
 }
