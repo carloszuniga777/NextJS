@@ -37,9 +37,10 @@ export async function login(values: z.infer<typeof LoginSchema>){
             if(!existingUser) return {error: 'Usuario no encontrado'}
 
 
-
             //compara la contrasena introducida con la que existe en la base de datos
-            const matchPassword = await compare(password, existingUser.pass);
+            const matchPassword = await compare(password, existingUser.password);
+
+
 
             if(!matchPassword) return {error: 'Contraseña incorrecta'}
 

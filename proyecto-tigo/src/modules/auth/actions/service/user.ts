@@ -1,13 +1,14 @@
 'use server'
 
 import { getErrorMessage } from '@/functions/error';
-import { pool } from '@/server/database';
+import { sql } from '@/server/database';
+
 
 interface userdb{
-  id: number,
+  id_usuario: number,
   usuario: string,
   correo: string,
-  pass: string
+  password: string
 }
 
 
@@ -15,27 +16,22 @@ interface userdb{
 //Consulta desde la base de datos si el email del usuario existe, en caso de existir, devuelve la informacion del usuario
 export async function getEmail(correo:string):Promise<userdb>{
 
-     const client  = await pool.connect();              //iniciando la conexion
 
     try{
   
-        const query = { text: `select id,
+        const query = await sql`select 
+                                      id_usuario,
                                       usuario, 
                                       correo, 
-                                      pass 
-                                from tbl_boc_logins where correo =$1`,
-                         values: [correo.toLowerCase().trim()]
-                      }
-  
-                      
-        const response = await client.query(query)         //realizando la consulta en la base de datos 
-        
-        return response.rows[0]
-   
+                                      password 
+                                from tbl_boc_usuarios 
+                                where correo = ${correo.toLowerCase().trim()}`
+
+      
+        return query[0] as userdb;
+            
      }catch(error){
        throw `Error: ${getErrorMessage(error)}` 
-    }finally{
-        client.release()                   //liberando la conexion
     }  
   
   }
@@ -47,29 +43,26 @@ export async function getEmail(correo:string):Promise<userdb>{
 //Consulta desde la base de datos si el username del usuario existe, en caso de existir, devuelve la informacion del usuario
   export async function getUser(usuario:string):Promise<userdb>{
     
-    const client  = await pool.connect();              //iniciando la conexion
+
 
     try {
         
         
-        const query = { text: `select 
-                                      id,
-                                      usuario, 
-                                      correo, 
-                                      pass 
-                                from tbl_boc_logins where usuario =$1`,
-                         values: [usuario.toUpperCase().trim()]
-                      }
-                        
-        const response = await client.query(query)    //realizando la consulta en la base de datos  
-        
-        return response.rows[0]
+      const query = await sql`select 
+                                    id_usuario,
+                                    usuario, 
+                                    correo, 
+                                    password 
+                                from tbl_boc_usuarios 
+                                where usuario = ${usuario.toUpperCase().trim()}`
+                      
+
+      
+        return query[0] as userdb;
 
 
     } catch (error) {
         throw `Error: ${getErrorMessage(error)}`      
-    }finally{
-      client.release()                                //liberando la conexion
     }
 
   }
@@ -78,31 +71,22 @@ export async function getEmail(correo:string):Promise<userdb>{
 
 export async function getUserByID(id:string):Promise<userdb>{
     
-  const client  = await pool.connect();              //iniciando la conexion
-
   try {
       
       
-      const query = { text: `select 
-                                    id,
+        const query = await sql`select 
+                                    id_usuario,
                                     usuario, 
                                     correo, 
-                                    pass 
-                              from tbl_boc_logins where id =$1`,
-                       values: [id]
-                    }
-                      
-      const response = await client.query(query)    //realizando la consulta en la base de datos  
-      
-      return response.rows[0]
+                                    password  
+                              from tbl_boc_usuarios where id_usuario =${id}`
+                    
 
-
+        return query[0] as userdb;
+        
   } catch (error) {
       throw `Error: ${getErrorMessage(error)}`         
-  }finally{
-    client.release()                                //liberando la conexion
   }
-
 }
 
 
@@ -118,33 +102,32 @@ export async function getUserByID(id:string):Promise<userdb>{
   //Inserta en la base de datos la informacion del usuario: correo, contrasena, etc
   export async function createNewUser({usuario, pass, correo, tipo_usuario, territorio, observacion}:createUserDB){
         
-      const client = await pool.connect()       //iniciando la conexion
 
       try {
-               await client.query('BEGIN')      //inicio del proceso
+              
+                  const query = await sql`insert into tbl_boc_usuarios
+                                          (
+                                            usuario, 
+                                            password, 
+                                            correo
+                                          )
+                                          values
+                                          (
+                                            ${usuario.toUpperCase().trim()},
+                                            ${pass}, 
+                                            ${correo.toLowerCase().trim()}
+                                          ) RETURNING * `
 
-               const fechaActual = new Date().toISOString();  
+
+            if (!query.length) {
+              throw new Error('Usuario no fue creado');
+            }
+          
+            return query[0] as createUserDB;
             
-               const query = { text: `insert into tbl_boc_logins(usuario, pass, correo, territorio, tipo_usuario, observacion, fecha_log)
-                                      values($1, $2, $3, $4, $5, $6, $7) RETURNING * `,
-                               values: [usuario.toUpperCase().trim(), pass, correo.toLowerCase().trim(), territorio, tipo_usuario, observacion, fechaActual]
-                             } 
-
-               
-                const response = await client.query(query)    //insercion en la base de datos
-               
-                await client.query('COMMIT')                   //commit 
-
-                return response.rows[0]
-
-            
+                         
         } catch (error) {
-
-            await client.query('ROLLBACK')                        //rollback
-
             throw `Error: ${getErrorMessage(error)}`  
-            
-        }finally{
-          client.release()                                       //libera la conexion una vez finalizado de usar   
         }
+
   }

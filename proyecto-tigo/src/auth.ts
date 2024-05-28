@@ -1,9 +1,6 @@
 import NextAuth from "next-auth"
 import authConfig from "@/auth.config"
 
-import { pool } from "@/server/database"    //Instalar: npm install @auth/pg-adapter pg | Configuracion del adaptador pg: https://authjs.dev/getting-started/adapters/pg
-import PostgresAdapter from "@auth/pg-adapter"
-
 import { confirmToken, deleteTwoFactorTokenByID, getTwoFactorTokenByUserId } from "./modules/auth/actions/service/twoFactorToken"
 import { getUserByID } from "./modules/auth/actions/service/user"
 
@@ -48,7 +45,7 @@ export const {
                Valida que el usuario tenga un Token asignado, en caso que no lo tenga no le permite pasar.
                Si tiene un Token asignado, este se marca como verificado. Para permitir el ingreso al portal por 1 semana
             */
-            const twoFactorConfirmation = await getTwoFactorTokenByUserId(existingUser.id)
+            const twoFactorConfirmation = await getTwoFactorTokenByUserId(existingUser.id_usuario)
 
 
             if(!twoFactorConfirmation) return false
@@ -75,7 +72,7 @@ export const {
             return token
         }
     },        
-    adapter: PostgresAdapter(pool),    
+   
     session: { strategy: "jwt" },
     ...authConfig
 })

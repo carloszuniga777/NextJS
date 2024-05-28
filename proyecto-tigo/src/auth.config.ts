@@ -39,7 +39,7 @@ export default {
                     
                                   //Se compara la contrasena escrita por el usuario vs la contrasena que esta registrada en la base de datos  
                                  //La contrasena que esta almacenada en la base de datos esta encryptada por lo que se necesita desencriptar para compararlo con la contrasena que el usuario escribio  
-                                const matchPassword = await bcrypt.compare(password, userFound.pass)
+                                const matchPassword = await bcrypt.compare(password, userFound.password)
 
                                // console.log('matchPassword', matchPassword)
 
@@ -49,7 +49,7 @@ export default {
                                     
                                 //Si el usuario se autentico correctamente se crea un tocken en las cookies, y te redirige al homePage    
                                 return {
-                                    id: userFound?.id.toString(),
+                                    id: userFound?.id_usuario.toString(),
                                     usuario: userFound?.usuario,
                                     correo: userFound?.correo
                                 } 

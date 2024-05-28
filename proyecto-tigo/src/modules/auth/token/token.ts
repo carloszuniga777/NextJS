@@ -31,16 +31,18 @@ export async function generateTwoFactorToken(username:string):Promise<newToken>{
             
             const user = await getUser(username)
 
+          
+
             //crea el nuevo Token
             const newTwoFactorToken = await createTwoFactorToken({
                                                                   username, 
-                                                                  userID: user.id,  
+                                                                  userID: user.id_usuario,  
                                                                   expires,
                                                                   token: twoFactorToken
                                                                   }
                                                                 )
                                                       
-        return newTwoFactorToken                                                            
+        return newTwoFactorToken[0]                                                            
 
 
     } catch (error) {
