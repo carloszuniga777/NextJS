@@ -1,5 +1,4 @@
-import style from '@/modules/auth/styles/auth.module.css'
-import { LoginForm } from "@/modules/auth/login/LoginForm";
+import { redirect } from 'next/navigation';
 
 
 export const metadata = {
@@ -8,13 +7,7 @@ export const metadata = {
 };
 
 
-export default function LoginPage() {
+export default function HomePage() {
 
-return( 
-        <main className={`h-[100vh] ${style.body} flex flex-col justify-center`}>
-              <section className='flex flex-col justify-center items-center pt-3'>
-                  <LoginForm/>
-              </section> 
-          </main>
-      );
+    redirect('/login');
 }

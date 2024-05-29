@@ -23,7 +23,7 @@ export const {
 
         //Inicio de Session
         async signIn({user, account}){
-             console.log('sigIn', {user, account})   
+           //  console.log('sigIn', {user, account})   
              
 
              if(!user.id) return false
@@ -32,6 +32,7 @@ export const {
             /**Verifica si el usuario existe, si no existe deniega el acceso a traves del middleware
              * Esto proveé una capa extra de seguridad, ya que hemos hecho lo mismo en la parte del Front End
              * */ 
+
             const existingUser = await getUserByID(user.id)  
              
             if(!existingUser){
@@ -45,6 +46,7 @@ export const {
                Valida que el usuario tenga un Token asignado, en caso que no lo tenga no le permite pasar.
                Si tiene un Token asignado, este se marca como verificado. Para permitir el ingreso al portal por 1 semana
             */
+
             const twoFactorConfirmation = await getTwoFactorTokenByUserId(existingUser.id_usuario)
 
 
@@ -54,6 +56,7 @@ export const {
             await confirmToken(twoFactorConfirmation.usuario)
 
             return true
+            
         },
         async session({token, session}){
            /* console.log({sessionTokem: token,

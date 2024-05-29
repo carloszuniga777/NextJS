@@ -4,6 +4,7 @@ import authConfig from "@/auth.config";
 import NextAuth from "next-auth";
 
 
+
 const authRoutes = ["/", "/login"]                  //Estas rutas son usadas para autenticacion
 const DEFAULT_LOGIN_REDIRECT = "/dashboard";        //Ruta de redireccionamiento
 
@@ -13,17 +14,19 @@ export const { auth } = NextAuth(authConfig);
 
 
 export default auth((req) => {
-   
+
     const { nextUrl } = req                  //Se obtiene la informacion de la url donde navega el usuario
     const isLoggedIn = !!req.auth           //Se obtiene el estatus del usuario, si esta authenticado o no
  
 
     const isAuthRoutes = authRoutes.includes(nextUrl.pathname)
-    
+
+    //console.log('ejecutando', isAuthRoutes)
+ 
 
      //Si el usuario se encuentra en la ruta login   
-    if(isAuthRoutes){                        
-
+    if(isAuthRoutes){        
+         
         //Verifica si el usuario esta autenticado, si esta autenticado redirige a la pagina principal, de lo contrario no hace nada
         if(isLoggedIn){
             return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
@@ -37,10 +40,12 @@ export default auth((req) => {
    
 })
 
+//Rutas protegidas por el Middleware
 
 //https://nextjs.org/docs/pages/building-your-application/routing/middleware#matching-paths
 export const config = { 
     matcher: [  "/dashboard/:path*", 
                 "/register/:path*",
+                "/login/:path*",
             ]
 }
