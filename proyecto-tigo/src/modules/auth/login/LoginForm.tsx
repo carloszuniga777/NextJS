@@ -99,7 +99,7 @@ export const LoginForm = () => {
                                                   obligatoryField={false}
                                                 />
                                                 <button onClick={resendCodeTwoFactor} className='text-xs pl-3 pr-3 mb-4 font-bold text-[#5e86b7] hover:underline hover:text-[#000640]'>
-                                                  Generar un nuevo Token
+                                                  Generar un nuevo código
                                                   </button>
                                                 
                                         </div>
