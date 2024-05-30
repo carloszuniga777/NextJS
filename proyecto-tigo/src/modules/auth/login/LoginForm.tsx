@@ -1,7 +1,7 @@
 'use client'
 
 import {useForm} from 'react-hook-form'   //Validador del formulario | instalar: npm install react-hook-form
-import { useState, useTransition } from 'react'     //para los errores   
+import { useEffect, useState, useTransition } from 'react'     //para los errores   
 import style from '../styles/auth.module.css'
 import { TextInputField } from '../../../components/form/TextInputField'
 import Image from 'next/image'
@@ -9,6 +9,7 @@ import Image from 'next/image'
 
 import { login } from '../actions/login'
 import { useRouter } from 'next/navigation'
+import { generateTwoFactorToken } from '../token/token'
 //import { Modal } from '../../../components/modal/modal';
 //import { ContentModalTwoFactor } from './ContentModalTwoFactor';
 
@@ -17,9 +18,11 @@ import { useRouter } from 'next/navigation'
 
 export const LoginForm = () => {
 
-  const {register, reset, handleSubmit, formState: {errors}} = useForm()
+  const {register, reset, setValue, handleSubmit, formState: {errors}} = useForm()
   const [error, setError] = useState<string | null>(null)
   const [showTwoFactor, setShowTwoFactor] = useState(false)
+  const [messegeResendCode, setMessageResenCode] = useState(false)
+  
   //const [isModalOpen, setIsModalOpen] = useState(false)
   
   const route = useRouter()
@@ -29,6 +32,7 @@ export const LoginForm = () => {
   const onSubmit = handleSubmit( async({username, password, twoFactorCode}) =>{
    
     route.refresh()                                                 //refresca la pagina
+
 
     //Se realiza todo el proceso de autenticacion, en la cual se valida si el usuario existe o no, y su contrasena.
     await login({username, password, twoFactorCode}).then(data=>{                 
@@ -50,10 +54,25 @@ export const LoginForm = () => {
   })
 
 
+
+
+
+
+  const resendCodeTwoFactor = ()=>{
+    setValue('twoFactorCode', '')     //Limpia el input de de doble autenticacion
+    
+    setMessageResenCode(true)  
+
+    setTimeout(() => {
+      setMessageResenCode(false);
+    }, 5000);
+  
+  }
   
   return( 
         <>
             <form onSubmit={onSubmit} className='w-[25%] min-w-80'> 
+                {messegeResendCode && showTwoFactor && (<p className='bg-green-700 text-lg text-white p-3  text-center rounded-lg mb-4'>El código de autenticación fue reenviado exitosamente.</p>)}
                 {error && (<p className='bg-red-700 text-lg text-white p-3  text-center rounded-lg mb-4'>{error}</p>)}       
                 <section className={` ${style.card} ${style.cardLoggin}`}>
                         <figure className='flex flex-row justify-center w-full mb-3'>
@@ -65,7 +84,7 @@ export const LoginForm = () => {
                                   {/**Region de confirmacion de Token de doble autenticacion, este se visualizara despues que el usuario haya ingresado correctamente el usuario y la contrasena */} 
                                   {showTwoFactor && (
                                     <>
-                                        <div>
+                                        <div className='flex flex-col'>
                                               <p className="mb-8 font-sans text-base  font-normal leading-relaxed text-gray-700 text-center">
                                                   Se envió el código de verificación a su correo y a su teléfono
                                               </p>
@@ -77,8 +96,12 @@ export const LoginForm = () => {
                                                     type="text"
                                                     label="Ingrese el Código"
                                                     clase="mb-1 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                  obligatoryField={true}
+                                                  obligatoryField={false}
                                                 />
+                                                <button onClick={resendCodeTwoFactor} className='text-xs pl-3 pr-3 mb-4 font-bold text-[#5e86b7] hover:underline hover:text-[#000640]'>
+                                                  Generar un nuevo Token
+                                                  </button>
+                                                
                                         </div>
                                     </>
                                   )}

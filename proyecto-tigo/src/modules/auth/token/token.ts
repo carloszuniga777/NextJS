@@ -41,8 +41,11 @@ export async function generateTwoFactorToken(username:string):Promise<newToken>{
                                                                   token: twoFactorToken
                                                                   }
                                                                 )
-                                                      
-        return newTwoFactorToken[0]                                                            
+        
+                                                                
+       // console.log(newTwoFactorToken)
+
+        return newTwoFactorToken  as newToken                                                         
 
 
     } catch (error) {
