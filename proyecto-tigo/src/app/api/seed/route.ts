@@ -1,6 +1,6 @@
 
 
-import { pool } from '@/server/database'
+import { sql } from '@/server/database'
 import { NextResponse, NextRequest } from 'next/server'
 
 
@@ -8,15 +8,10 @@ import { NextResponse, NextRequest } from 'next/server'
 
 export async function GET(request: Request) { 
 
-    let query;
-    const client = await pool.connect()       //iniciando la conexion
-
     try{
 
-        await client.query('BEGIN')      //inicio del proceso
 
-
-        const createTableTwoFactorToken = `CREATE TABLE IF NOT EXISTS tbl_TwoFactorToken(
+      await sql`CREATE TABLE IF NOT EXISTS tbl_TwoFactorToken(
             "id" SERIAL PRIMARY KEY,
             "userid" INTEGER NOT NULL,
             "usuario" TEXT NOT NULL,
@@ -28,40 +23,22 @@ export async function GET(request: Request) {
         );`
 
           
-        
-        await client.query(createTableTwoFactorToken)
+        await sql`delete from TBL_BOC_USUARIOS where usuario='CARLOS.TROCHEZ'`
 
-
-            query ={
-                    text: `delete from TBL_BOC_USUARIOS where usuario=$1`,
-                    values: ['CARLOS.TROCHEZ'] 
-                   }
-
-             await client.query(query)        
 
          
-             query = {  text: `insert into TBL_BOC_USUARIOS(ID_USUARIO,USUARIO,PASSWORD, IDENTIFICACION,PRIMER_NOMBRE,SEGUNDO_NOMBRE,PRIMER_APELLIDO,SEGUNDO_APELLIDO,TELEFONO,CORREO,ID_PERFIL,ID_TIPO_USUARIO,ID_ROL,ID_TIPO_PLANILLA,ID_ESTADO,ID_TERRITORIO,ID_TIPO_IDENTIFICACION)
-                              values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING * `,
-                    values: [16082, 'CARLOS.TROCHEZ', '$2a$10$jXOPsIaesAeJPYvYvDdGTOUWdoyinP3svSMBFSoqqSBEd/yBnO/ru', '0801199218400', 'CARLOS','EBERTO','TROCHEZ','ZUNIGA','98998993','carlos.trochez@tigo.com.hn',1,1,1,3,1,1,1]
-                  } 
+         await sql`insert into TBL_BOC_USUARIOS(ID_USUARIO,USUARIO,PASSWORD)
+                   values(16082, 'CARLOS.TROCHEZ', '$2a$10$jXOPsIaesAeJPYvYvDdGTOUWdoyinP3svSMBFSoqqSBEd/yBnO/ru') RETURNING * `
 
+           
 
-       const response =  await client.query(query)
-
-        
-      
-       await client.query('COMMIT')                   //commit 
-
-        
         return NextResponse.json({
             messege: 'Tabla creada y llenada con datos de prueba exitosamente',
-            data: response.rows[0] 
         })
 
 
     }catch(error){
         
-        await client.query('ROLLBACK')                        //rollback
 
         return NextResponse.json( 
                                   { 
@@ -70,10 +47,6 @@ export async function GET(request: Request) {
                                   }, 
                                  { status: 400} 
                                 )
-
-    }finally{
-         
-        client.release() 
     }
 }
 

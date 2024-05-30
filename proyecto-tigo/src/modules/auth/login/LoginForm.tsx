@@ -33,7 +33,6 @@ export const LoginForm = () => {
    
     route.refresh()                                                 //refresca la pagina
 
-
     //Se realiza todo el proceso de autenticacion, en la cual se valida si el usuario existe o no, y su contrasena.
     await login({username, password, twoFactorCode}).then(data=>{                 
      
