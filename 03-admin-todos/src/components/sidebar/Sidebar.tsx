@@ -50,7 +50,7 @@ export const Sidebar = async() => {
 
   const userName = session?.user?.name ?? 'No Name'
   const avatarUrl = (session?.user?.image) ? session.user.image : 'https://tailus.io/sources/blocks/stats-cards/preview/images/second_user.webp'
-
+  const userRoles = session?.user?.roles ?? ['Client']
 
 
   return (
@@ -75,8 +75,8 @@ export const Sidebar = async() => {
                 height={150}
             />
 
-          <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">{userName}</h5>
-          <span className="hidden text-gray-400 lg:block">Admin</span>
+          <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block capitalize">{userName}</h5>
+          <span className="hidden text-gray-400 lg:block capitalize">{userRoles.join(',')}</span>
       </div>
 
       <ul className="space-y-2 tracking-wide mt-8">
