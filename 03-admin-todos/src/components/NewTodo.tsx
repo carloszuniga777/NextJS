@@ -1,15 +1,15 @@
 'use client';
 
 import { addTodo, deleteCompleted } from "@/todos/actions/todo-actions";     //Manipulando la base de datos con SERVER ACTION
-//import * as todosApi from "@/todos/helpers/todos";                        //Manera antigua de manipular la base de datos con REST API
-//import { useRouter } from "next/navigation";                    
+import * as todosApi from "@/todos/helpers/todos";                        //Manera antigua de manipular la base de datos con REST API
+import { useRouter } from "next/navigation";                    
 import { FormEvent, useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 
 
 export const NewTodo = () => { 
 
-    //const router = useRouter();
+    const router = useRouter();
     const [description, setDescription] = useState('')  //Valida que el usuario haya escrito algo en el input y evita que se haga submit si el input esta vacio
 
 
@@ -22,10 +22,12 @@ export const NewTodo = () => {
         //console.log('form sumitted', description)
         
         // todosApi.createTodo(description)           //Creando el todo con REST API (Manera antigua)
+         // router.refresh()                           //Con Sever Action ya no se usa router.refresh | solo con el REST API
 
         await addTodo(description)                     //Creando el todo con Server Action (nueva forma)
+       
         setDescription('')                            //Limpia el input
-       //  router.refresh()                           //Con Sever Action ya no se usa router.refresh
+       
     } 
 
 

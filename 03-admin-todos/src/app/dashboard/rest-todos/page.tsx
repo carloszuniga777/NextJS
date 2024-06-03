@@ -2,8 +2,10 @@ export const dynamic = 'force-dynamic'   //Fuerza que la pagina sea dinamica al 
 export const revalidate = 0
 
 import prisma from '@/app/lib/prisma';  //cliente prisma
+import { getUserServerSession } from '@/auth/actions/auth-actions';
 import { NewTodo } from '@/components/NewTodo';
 import { TodosGrid } from '@/todos/components/TodosGrid';
+import { redirect } from 'next/navigation';
 
 
 
@@ -17,8 +19,22 @@ export const metadata = {
 // snippet prc
 export default async function RestTodosPage() {
 
-  const todos = await prisma.todo.findMany({orderBy: { description: 'asc' }});
+    //Se obtiene el usuario atraves de la session
+    const user = await getUserServerSession()
 
+    //Si el usuario no existe lo redirige al login
+    if( !user) redirect('/api/auth/signin')
+  
+  
+      //obtiene los todos por usuarios
+      const todos = await prisma.todo.findMany(
+      {
+        where: {userId: user.id},
+        orderBy: { description: 'asc' }
+      });
+
+
+      
   return (
     <div>
         <div className='w-full px-3 mx-5 mb-5'>

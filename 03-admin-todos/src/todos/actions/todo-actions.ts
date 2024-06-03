@@ -1,6 +1,7 @@
 'use server'
 
 import prisma from '@/app/lib/prisma';
+import { getUserServerSession } from '@/auth/actions/auth-actions';
 import { Todo } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
@@ -38,9 +39,12 @@ export const toggleTodo = async (id: string, complete: boolean) : Promise<Todo> 
 
 //Crear nuevo Todo
 export const addTodo = async(description: string)=>{
+
     try{
- 
-         const todo = await prisma.todo.create({data: {description} })   //Inserta un registro en la base de datos
+         
+         const user = await getUserServerSession()          //obtiene el usuario mediante la session
+
+        const todo = await prisma.todo.create({ data: { description, userId: user!.id } });   //Inserta un registro en la base de datos
       
 
          revalidatePath('/dashboard/server-todos')                       //Refrescar     |    Solo se puede llamar del server action, y no desde front end     
@@ -60,7 +64,14 @@ export const addTodo = async(description: string)=>{
 //borrar todo
 export const deleteCompleted = async(): Promise<void> =>{
 
-        await prisma.todo.deleteMany({ where:{ complete: true}})
+    try{
+        const user = await getUserServerSession()          //obtiene el usuario mediante la session
+
+        await prisma.todo.deleteMany({ where:{ complete: true, userId: user!.id}})
           
         revalidatePath('/dashboard/server-todos') 
+
+    }catch(error){
+        console.log({message: 'Error eliminando todo'})
+    }
 }

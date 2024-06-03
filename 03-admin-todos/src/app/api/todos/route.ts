@@ -8,6 +8,7 @@
 import { NextResponse, NextRequest } from 'next/server'
 import prisma from '@/app/lib/prisma';
 import * as yup from 'yup';
+import { getUserServerSession } from '@/auth/actions/auth-actions';
 
 export async function GET(request: Request) { 
 
@@ -73,11 +74,15 @@ export async function POST(request: Request) {
 
   //body = await await request.json()
 
+  const user = await getUserServerSession()     //se obtiene el usuario
+
+  if( !user) return NextResponse.json('Usuario no existe', {status: 401})
+
   try{
 
       const { description, complete } = await postSchema.validate(await request.json()) //Se realiza la peticion POST localhost:3000/api/todos/ y se obtiene el body
     
-       const todo = await prisma.todo.create({data: { description, complete } })   //Inserta un registro en la base de datos
+       const todo = await prisma.todo.create({data: { description, complete, userId: user.id } })   //Inserta un registro en la base de datos
     
       return NextResponse.json(todo)
 
@@ -93,9 +98,13 @@ export async function DELETE(request: Request) {
 
   //body = await await request.json()
 
+  const user = await getUserServerSession()     //se obtiene el usuario
+
+  if( !user) return NextResponse.json('Usuario no existe', {status: 401})
+
   try{
 
-       await prisma.todo.deleteMany({where: {complete: true}})   //Borra los registros que estan completados
+       await prisma.todo.deleteMany({where: {complete: true, userId: user.id}})   //Borra los registros que estan completados
     
        return NextResponse.json('Borrados')
 

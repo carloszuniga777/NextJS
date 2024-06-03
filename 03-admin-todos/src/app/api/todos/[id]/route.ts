@@ -5,6 +5,7 @@ import prisma from '@/app/lib/prisma';
 import { object } from 'yup';
 import * as yup from 'yup';
 import { Todo } from '@prisma/client';
+import { getUserServerSession } from '@/auth/actions/auth-actions';
 
 interface Segments{
     params: {
@@ -15,7 +16,16 @@ interface Segments{
 
 const getTodo= async(id: string):Promise<Todo | null> =>{
 
+    const user = await getUserServerSession()     //se obtiene el usuario
+
+    if( !user) return null
+
     const todo = await prisma.todo.findFirst({ where: {id} })   //Filtra la tabla todo Where = id
+
+    if(todo?.userId !== user.id){
+        return null
+    }
+
     return todo
 }
 
