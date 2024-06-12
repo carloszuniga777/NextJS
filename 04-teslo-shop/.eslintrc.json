@@ -1,3 +1,9 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  
+  //Para que la funcion que contiene la pagina sea anomina, es decir, que no lleve nombre, y el slintrc no marque error
+  "rules": {
+    "import/no-anonymous-default-export": ["off"],
+    "react/display-name": ["off"]
+  }
 }
