@@ -1,10 +1,17 @@
+'use client'
+
 import { titleFont } from '@/config/fonts';
+import { useUIStore } from '@/store';
 import Link from 'next/link';
 import { IoSearchOutline, IoCartOutline } from 'react-icons/io5';
 
 //snippet rafc
 
 export const TopMenu = () => {
+
+  //Zustand: Para controlar los estados del menu: abrirlo o cerrarlo  
+  const openSideMenu = useUIStore( state => state.openSideMenu);  //Funcion para abrir la ventana del menu | Pasa la variable isSideMenuOpen del context  del zustang a true, cuando el usuario presiona click en Menu
+
   return (
     <nav className="flex px-5 justify-between items-center w-full">
         
@@ -49,8 +56,13 @@ export const TopMenu = () => {
                     <IoCartOutline  className='w-5 h-5'/>
                 </div>
             </Link>
+            
 
-            <button className='m-2 p-2 rounded-md transition-all hover:bg-gray-100'>
+            {/**Abrir ventana del Menu*/}    
+            <button 
+                    onClick={openSideMenu}
+                    className='m-2 p-2 rounded-md transition-all hover:bg-gray-100'
+            >
                 Menú
             </button>
         
