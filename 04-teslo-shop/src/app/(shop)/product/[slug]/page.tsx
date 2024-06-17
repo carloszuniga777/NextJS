@@ -1,6 +1,7 @@
 import { initialData } from "@/seed/seed";
 import notFound from "../not-found";
 import { titleFont } from "@/config/fonts";
+import { QuantitySelector, SizeSelector } from "@/components";
 
 
 
@@ -34,8 +35,19 @@ export default function({ params }:Props) {
                 <p className="text-lg mb-5">${product?.price}</p>
                  {/**Selector de tallas */}
 
+                  {/**
+                   * Estás utilizando el operador de afirmación no nula ! en TypeScript. 
+                   * Este operador se utiliza para decirle al compilador de TypeScript que una variable será definitivamente no nula o no indefinida. 
+                   * Esto significa que estás seguro de que product no será null o undefined en el momento en que se utilice.  
+                   **/}
+
+                  <SizeSelector 
+                      selectedSize={product!.sizes[1]}    
+                      availableSizes={product!.sizes}
+                  />
 
                   {/**Selector de cantidad */}
+                  <QuantitySelector quantity={2}/>
 
 
                   {/**Boton */}
