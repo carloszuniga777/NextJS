@@ -1,7 +1,7 @@
 import { initialData } from "@/seed/seed";
-import notFound from "../not-found";
+import { notFound } from 'next/navigation';
 import { titleFont } from "@/config/fonts";
-import { QuantitySelector, SizeSelector } from "@/components";
+import { ProductSlideshow, QuantitySelector, SizeSelector } from "@/components";
 
 
 
@@ -17,22 +17,22 @@ export default function({ params }:Props) {
   const { slug } = params
   const product = initialData.products.find(product => product.slug === slug)
 
-  if(!product) notFound()
+  if(!product) notFound() 
 
   return (
     <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-3 gap-3">
       
           {/**SlideShow */}
           <div className="col-span-1 md:col-span-2">
-            Hola mundo
+            <ProductSlideshow title={product.title} images={product.images}/>
           </div>
 
           {/**Detalles */}
           <div className="col-span-1 px-5">
                 <h1 className={` ${titleFont.className} antialiased font-bold text-xl`}>
-                  { product?.title }
+                  { product.title }
                 </h1>
-                <p className="text-lg mb-5">${product?.price}</p>
+                <p className="text-lg mb-5">${product.price}</p>
                  {/**Selector de tallas */}
 
                   {/**
@@ -42,8 +42,8 @@ export default function({ params }:Props) {
                    **/}
 
                   <SizeSelector 
-                      selectedSize={product!.sizes[1]}    
-                      availableSizes={product!.sizes}
+                      selectedSize={product.sizes[1]}    
+                      availableSizes={product.sizes}
                   />
 
                   {/**Selector de cantidad */}
@@ -59,7 +59,7 @@ export default function({ params }:Props) {
                   {/**Descripcion*/}
                   <h3 className="font-bold text-sm">Descripción</h3>
                   <p className="font-light">
-                    { product?.description}
+                    { product.description}
                   </p>
             
           </div>
