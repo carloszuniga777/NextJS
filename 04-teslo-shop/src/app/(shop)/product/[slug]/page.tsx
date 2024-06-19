@@ -1,7 +1,7 @@
 import { initialData } from "@/seed/seed";
 import { notFound } from 'next/navigation';
 import { titleFont } from "@/config/fonts";
-import { ProductSlideshow, QuantitySelector, SizeSelector } from "@/components";
+import { ProductMobileSlideshow, ProductSlideshow, QuantitySelector, SizeSelector } from "@/components";
 
 
 
@@ -24,7 +24,19 @@ export default function({ params }:Props) {
       
           {/**SlideShow */}
           <div className="col-span-1 md:col-span-2">
-            <ProductSlideshow title={product.title} images={product.images}/>
+              {/**Mobile SlideShow*/} 
+              <ProductMobileSlideshow 
+                  title={product.title} 
+                  images={product.images} 
+                  className="block md:hidden"
+               />
+
+              {/**Desktop SlideShow*/} 
+             <ProductSlideshow 
+                  title={product.title} 
+                  images={product.images}
+                  className="hidden md:block"
+              /> 
           </div>
 
           {/**Detalles */}
