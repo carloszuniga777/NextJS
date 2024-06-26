@@ -31,7 +31,9 @@
 1. Clonar el repositorio
 2. Crear una copoa del arrchiv ```.env.template``` y renombrarlo a ```.env``` y cambiar las variables de entorno
 3. Instalar dependencias ```npm install```
-4. Correr el proyecto ```npm run dev```
+4. Correr las migraciones en Prisma ```npx prisma migrate dev```   
+5. Ejecutar seed ```npm run seed```
+6. Correr el proyecto ```npm run dev```
 
 
 ## Correr en prod
