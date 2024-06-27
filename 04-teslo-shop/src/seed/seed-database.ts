@@ -17,18 +17,30 @@
     
     4. Ejecutar: npm run seed    
     
+
+    -----------------------------------
     
 */
 
 import { initialData } from "./seed";
+import prisma from '../lib/prisma'
 
 async function main(){
 
- console.log(initialData)
+    //console.log(initialData)
 
-    
+    //Para ejecutar todo a la misma vez se ocupa Promise.all
+    await Promise.all([
+
+         //Borrando la inforamcion de las tablas
+         prisma.productImage.deleteMany(),
+         prisma.product.deleteMany(),
+         prisma.category.deleteMany(),
+    ])
+
     console.log('Seed ejecutado correctamente')
 }
+
 
 (()=>{
 
